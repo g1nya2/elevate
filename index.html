@@ -21,16 +21,16 @@
                     },
                     colors: {
                         ms: {
-                            blue: '#00A4EF',
-                            green: '#7FBA00',
-                            orange: '#F25022',
-                            yellow: '#FFB900',
-                            dark: '#0f172a',
-                            surface: 'rgba(30, 41, 59, 0.7)'
+                            blue: '#0078D4', /* MS 공식 블루는 조금 더 차분함 */
+                            green: '#107C10',
+                            orange: '#D83B01',
+                            yellow: '#FDB900',
+                            slate: '#F3F5F8', /* 배경용 연한 회색 */
                         }
                     },
-                    backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                        'hover': '0 20px 50px -12px rgba(0,120,212,0.15)',
                     }
                 }
             }
@@ -39,94 +39,114 @@
 
     <style>
         body {
-            background-color: #0f172a;
-            color: white;
+            background-color: #F8FAFC;
+            color: #1e293b;
             overflow-x: hidden;
         }
 
-        /* 오로라 배경 애니메이션 */
-        .aurora-bg {
+        /* 은은한 파스텔 배경 애니메이션 */
+        .pastel-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
             z-index: -1;
-            background: 
-                radial-gradient(circle at 15% 50%, rgba(0, 164, 239, 0.15), transparent 25%), 
-                radial-gradient(circle at 85% 30%, rgba(127, 186, 0, 0.15), transparent 25%);
-            filter: blur(60px);
-            animation: auroraMove 10s infinite alternate;
-        }
-
-        @keyframes auroraMove {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-        }
-
-        /* Glassmorphism 카드 스타일 */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s ease;
-        }
-
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
-        /* 지도 포인트 스타일 */
-        .map-point {
-            cursor: pointer;
-            transition: all 0.3s ease;
-            fill: rgba(255, 255, 255, 0.3);
-        }
-        .map-point:hover {
-            fill: #00A4EF;
-            filter: drop-shadow(0 0 8px #00A4EF);
-            r: 8; 
+            background: white;
         }
         
-        /* 텍스트 그라디언트 */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 20s infinite ease-in-out alternate;
+            border-radius: 50%;
+        }
+        
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #E0F2FF; animation-delay: 0s; } /* 연한 블루 */
+        .blob-2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: #F0F9FF; animation-delay: -5s; } /* 더 연한 블루 */
+        .blob-3 { top: 40%; left: 40%; width: 30vw; height: 30vw; background: #FFF4CE; animation-delay: -10s; } /* 연한 옐로우 */
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 50px) scale(1.1); }
+        }
+
+        /* Clean White Card Style */
+        .clean-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .clean-card:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.1);
+            border-color: #0078D4;
+        }
+
+        /* Map Styles */
+        .map-line {
+            stroke: #CBD5E1; /* 연한 회색 선 */
+            stroke-width: 1.5;
+            stroke-dasharray: 5;
+            animation: dash 30s linear infinite;
+        }
+        
+        @keyframes dash {
+            to { stroke-dashoffset: 1000; }
+        }
+
+        .map-point {
+            cursor: pointer;
+            fill: white;
+            stroke: #0078D4;
+            stroke-width: 2;
+            transition: all 0.3s ease;
+        }
+        
+        .map-point:hover {
+            fill: #0078D4;
+            r: 8;
+        }
+
+        /* Text Gradient */
         .text-gradient {
-            background: linear-gradient(to right, #00A4EF, #7FBA00);
+            background: linear-gradient(135deg, #0078D4 0%, #002050 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
-        .region-tooltip {
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
     </style>
 </head>
-<body class="antialiased selection:bg-ms-blue selection:text-white">
+<body class="antialiased selection:bg-ms-blue/20 selection:text-ms-blue">
 
-    <div class="aurora-bg"></div>
+    <div class="pastel-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
 
-    <nav class="fixed w-full z-50 top-0 left-0 border-b border-white/10 glass-card bg-opacity-30">
+    <nav class="fixed w-full z-50 top-0 left-0 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <svg width="24" height="24" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="24" height="24" viewBox="0 0 23 23" fill="none">
                     <path d="M0 0H10.5V10.5H0V0Z" fill="#F25022"/>
                     <path d="M12.5 0H23V10.5H12.5V0Z" fill="#7FBA00"/>
                     <path d="M0 12.5H10.5V23H0V12.5Z" fill="#00A4EF"/>
                     <path d="M12.5 12.5H23V23H12.5V12.5Z" fill="#FFB900"/>
                 </svg>
-                <span class="text-xl font-bold tracking-tight">Microsoft <span class="font-light">Elevate Korea</span></span>
+                <span class="text-xl font-bold tracking-tight text-slate-800">Microsoft <span class="font-normal text-slate-500">Elevate Korea</span></span>
             </div>
-            <div class="hidden md:flex gap-8 text-sm font-medium text-gray-300">
-                <a href="#map-section" class="hover:text-white transition-colors">지원청 찾기</a>
-                <a href="#m365-section" class="hover:text-white transition-colors">M365 & Copilot</a>
-                <a href="#studio-section" class="hover:text-white transition-colors">Agentathon</a>
+            <div class="hidden md:flex gap-8 text-sm font-semibold text-slate-500">
+                <a href="#map-section" class="hover:text-ms-blue transition-colors">지원청 찾기</a>
+                <a href="#m365-section" class="hover:text-ms-blue transition-colors">M365 & Copilot</a>
+                <a href="#studio-section" class="hover:text-ms-blue transition-colors">Agentathon</a>
             </div>
-            <button class="px-5 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-sm font-semibold transition-all">
+            <button class="px-5 py-2.5 rounded-full bg-slate-900 text-white text-sm font-semibold hover:bg-slate-700 transition-all shadow-lg shadow-slate-900/20">
                 Contact Us
             </button>
         </div>
@@ -135,42 +155,57 @@
     <section id="map-section" class="relative min-h-screen flex flex-col lg:flex-row items-center justify-center max-w-7xl mx-auto px-6 pt-24 pb-12 gap-12">
         
         <div class="lg:w-1/2 z-10 hero-text">
-            <div class="inline-block px-4 py-1 rounded-full border border-ms-blue/30 bg-ms-blue/10 text-ms-blue text-xs font-bold mb-6 tracking-wider uppercase">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-ms-blue text-xs font-bold mb-6 tracking-wide uppercase shadow-sm">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                </span>
                 AI for Korea Education
             </div>
-            <h1 class="text-5xl lg:text-7xl font-bold leading-tight mb-6">
-                교실의 미래를<br>
-                <span class="text-gradient">Microsoft AI</span>로<br>
-                시작하세요.
+            <h1 class="text-5xl lg:text-7xl font-bold leading-[1.1] mb-6 text-slate-900 tracking-tight">
+                교실의 미래,<br>
+                <span class="text-gradient">Microsoft AI</span>가<br>
+                함께합니다.
             </h1>
-            <p class="text-lg text-gray-400 mb-8 max-w-lg leading-relaxed">
+            <p class="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed font-medium">
                 계정 생성부터 코파일럿 활용까지.<br>
-                선생님과 학생을 위한 모든 지원이 여기에 있습니다.<br>
-                <span class="text-white font-semibold">먼저, 소속된 교육청을 지도에서 선택해주세요.</span>
+                선생님과 학생을 위한 모든 지원이 준비되어 있습니다.<br>
+                <span class="text-slate-900 font-bold underline decoration-ms-blue/30 decoration-4 underline-offset-4">우측 지도에서 교육청을 선택해주세요.</span>
             </p>
             
-            <div class="glass-card p-6 rounded-2xl border-l-4 border-l-ms-yellow flex items-start gap-4">
-                <div class="bg-ms-yellow/20 p-3 rounded-full text-ms-yellow">
+            <div class="bg-white p-6 rounded-2xl shadow-soft border border-slate-100 flex items-start gap-4 transform transition-transform hover:scale-105">
+                <div class="bg-ms-yellow/10 p-3 rounded-xl text-ms-orange">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
                 </div>
                 <div>
-                    <h3 class="text-lg font-bold text-white mb-1">M365 계정이 없으신가요?</h3>
-                    <p class="text-sm text-gray-400">우측 지도에서 교육청을 클릭하면,<br>즉시 가입 및 계정 복구 페이지로 연결됩니다.</p>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">계정 문제로 어려우신가요?</h3>
+                    <p class="text-sm text-slate-500">지도의 교육청을 클릭하시면,<br>가입 및 계정 복구 페이지로 바로 이동합니다.</p>
                 </div>
             </div>
         </div>
 
         <div class="lg:w-1/2 relative flex justify-center items-center h-[500px] lg:h-[700px] w-full map-container">
-            <div class="absolute inset-0 bg-gradient-radial from-ms-blue/5 to-transparent opacity-50 blur-2xl"></div>
             
-            <svg viewBox="0 0 400 600" class="w-full h-full drop-shadow-2xl" id="korea-map">
-                <g stroke="rgba(255,255,255,0.1)" stroke-width="1">
-                    <line x1="120" y1="120" x2="140" y2="140" /> <line x1="140" y1="140" x2="200" y2="200" /> <line x1="120" y1="120" x2="100" y2="130" /> <line x1="140" y1="140" x2="140" y2="250" /> <line x1="140" y1="250" x2="180" y2="250" /> <line x1="180" y1="250" x2="250" y2="350" /> <line x1="250" y1="350" x2="300" y2="350" /> <line x1="300" y1="350" x2="280" y2="400" /> <line x1="140" y1="250" x2="120" y2="400" /> <line x1="120" y1="400" x2="120" y2="520" /> </g>
+            <svg viewBox="0 0 400 600" class="w-full h-full drop-shadow-xl" id="korea-map">
+                <g class="map-line">
+                    <line x1="120" y1="120" x2="140" y2="140" />
+                    <line x1="140" y1="140" x2="200" y2="200" />
+                    <line x1="120" y1="120" x2="100" y2="130" />
+                    <line x1="140" y1="140" x2="140" y2="250" />
+                    <line x1="140" y1="250" x2="180" y2="250" />
+                    <line x1="180" y1="250" x2="250" y2="350" />
+                    <line x1="250" y1="350" x2="300" y2="350" />
+                    <line x1="300" y1="350" x2="280" y2="400" />
+                    <line x1="140" y1="250" x2="120" y2="400" />
+                    <line x1="120" y1="400" x2="120" y2="520" />
+                </g>
 
                 <g id="map-points">
                     <circle cx="120" cy="120" r="6" class="map-point" data-name="서울교육청" data-url="https://o365.sen.go.kr/" />
                     <circle cx="100" cy="130" r="5" class="map-point" data-name="인천교육청" data-url="https://o365.ice.go.kr/" />
-                    <circle cx="140" cy="140" r="12" class="map-point" data-name="경기교육청" data-url="https://cloud.goe.go.kr/" style="opacity:0.5" /> <circle cx="200" cy="110" r="5" class="map-point" data-name="강원교육청" data-url="https://office365.gwe.go.kr/" />
+                    <circle cx="140" cy="140" r="10" class="map-point" data-name="경기교육청" data-url="https://cloud.goe.go.kr/" style="opacity:0.6" />
+                    
+                    <circle cx="200" cy="110" r="5" class="map-point" data-name="강원교육청" data-url="https://office365.gwe.go.kr/" />
                     
                     <circle cx="140" cy="250" r="5" class="map-point" data-name="세종/충남" data-url="https://o365.cne.go.kr/" />
                     <circle cx="180" cy="230" r="5" class="map-point" data-name="충북교육청" data-url="https://cloud.cbe.go.kr/" />
@@ -190,95 +225,100 @@
                 </g>
             </svg>
             
-            <div id="tooltip" class="region-tooltip absolute bg-gray-900 border border-white/20 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-xl -translate-y-10">
+            <div id="tooltip" class="absolute bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-xl -translate-y-10 opacity-0 transition-opacity pointer-events-none z-20">
                 지역 선택
+                <div class="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-800 rotate-45"></div>
             </div>
         </div>
     </section>
 
     <section id="m365-section" class="py-20 px-6 max-w-7xl mx-auto">
         <div class="mb-12 text-center fade-in-section">
-            <h2 class="text-3xl lg:text-4xl font-bold mb-4">Explore Microsoft AI</h2>
-            <p class="text-gray-400">교육 현장에 필요한 모든 도구를 확인하세요.</p>
+            <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-slate-900">Explore Microsoft AI</h2>
+            <p class="text-slate-500 text-lg">교육 현장을 변화시키는 강력한 도구들을 만나보세요.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[200px]">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[220px]">
             
-            <div class="glass-card rounded-3xl p-8 col-span-1 md:col-span-2 row-span-2 relative overflow-hidden group cursor-pointer fade-in-section">
-                <div class="absolute inset-0 bg-gradient-to-br from-ms-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="clean-card rounded-3xl p-8 col-span-1 md:col-span-2 row-span-2 relative overflow-hidden group cursor-pointer fade-in-section bg-gradient-to-br from-white to-blue-50">
                 <div class="relative z-10 flex flex-col h-full justify-between">
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-pink-500 to-violet-500 flex items-center justify-center mb-4">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-r from-pink-500 to-violet-600 flex items-center justify-center mb-6 shadow-lg shadow-purple-200">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                         </div>
-                        <h3 class="text-3xl font-bold mb-2">Microsoft Copilot</h3>
-                        <p class="text-gray-300">선생님의 업무 보조부터 학생들의 창의적 학습까지.<br>AI 비서의 모든 것을 알아보세요.</p>
+                        <h3 class="text-3xl font-bold mb-3 text-slate-900">Microsoft Copilot</h3>
+                        <p class="text-slate-500 leading-relaxed">선생님의 업무 시간은 줄이고,<br>학생들의 창의력은 무한히 확장합니다.<br>AI 비서와 함께하는 새로운 교실을 경험하세요.</p>
                     </div>
-                    <div class="flex items-center gap-2 text-ms-blue font-semibold group-hover:translate-x-2 transition-transform">
-                        가이드 보기 <span>→</span>
+                    <div class="flex items-center gap-2 text-ms-blue font-bold group-hover:gap-3 transition-all">
+                        자세히 보기 <span class="text-lg">→</span>
                     </div>
                 </div>
             </div>
 
-            <div class="glass-card rounded-3xl p-6 col-span-1 md:col-span-1 row-span-1 group cursor-pointer fade-in-section">
-                <h3 class="text-xl font-bold mb-2 text-ms-blue">Microsoft 365</h3>
-                <p class="text-xs text-gray-400 mb-4">Word, Excel, PPT, Teams의 교육용 기능 총정리</p>
+            <div class="clean-card rounded-3xl p-6 col-span-1 md:col-span-1 row-span-1 group cursor-pointer fade-in-section">
+                <h3 class="text-xl font-bold mb-1 text-slate-800">Microsoft 365</h3>
+                <p class="text-xs text-slate-500 mb-6">Word, Excel, PPT 완전 정복</p>
                 <div class="flex justify-end">
-                    <img src="https://img.icons8.com/color/96/microsoft-365.png" alt="M365" class="w-12 h-12 opacity-80 group-hover:scale-110 transition-transform">
+                    <img src="https://img.icons8.com/color/96/microsoft-365.png" alt="M365" class="w-16 h-16 drop-shadow-md group-hover:scale-110 transition-transform">
                 </div>
             </div>
 
-            <div class="glass-card rounded-3xl p-6 col-span-1 md:col-span-1 row-span-1 group cursor-pointer fade-in-section">
-                <h3 class="text-xl font-bold mb-2 text-indigo-400">Microsoft Teams</h3>
-                <p class="text-xs text-gray-400 mb-4">하이브리드 교실과 과제 관리의 표준</p>
+            <div class="clean-card rounded-3xl p-6 col-span-1 md:col-span-1 row-span-1 group cursor-pointer fade-in-section">
+                <h3 class="text-xl font-bold mb-1 text-indigo-600">Microsoft Teams</h3>
+                <p class="text-xs text-slate-500 mb-6">하이브리드 교실의 표준</p>
                 <div class="flex justify-end">
-                    <img src="https://img.icons8.com/color/96/microsoft-teams-2019.png" alt="Teams" class="w-12 h-12 opacity-80 group-hover:scale-110 transition-transform">
+                    <img src="https://img.icons8.com/color/96/microsoft-teams-2019.png" alt="Teams" class="w-16 h-16 drop-shadow-md group-hover:scale-110 transition-transform">
                 </div>
             </div>
 
-            <div class="glass-card rounded-3xl p-6 col-span-1 md:col-span-1 row-span-1 group cursor-pointer fade-in-section">
-                <h3 class="text-xl font-bold mb-2 text-green-500">Minecraft EDU</h3>
-                <p class="text-xs text-gray-400">코딩 교육과 게이미피케이션</p>
-                <div class="mt-4 w-full h-1 bg-gray-700 rounded-full overflow-hidden">
-                    <div class="w-3/4 h-full bg-green-500"></div>
+            <div class="clean-card rounded-3xl p-6 col-span-1 md:col-span-1 row-span-1 group cursor-pointer fade-in-section">
+                <h3 class="text-xl font-bold mb-2 text-green-600">Minecraft EDU</h3>
+                <p class="text-xs text-slate-500 mb-4">게이미피케이션 & 코딩</p>
+                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                    <div class="bg-green-500 h-2 rounded-full w-3/4"></div>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <img src="https://img.icons8.com/color/48/minecraft-logo.png" class="w-10 h-10 group-hover:rotate-12 transition-transform">
                 </div>
             </div>
 
-             <div class="glass-card rounded-3xl p-6 col-span-1 md:col-span-1 row-span-1 flex flex-col justify-center items-center text-center group cursor-pointer fade-in-section bg-white/5 hover:bg-white/10">
-                <h3 class="text-2xl font-bold mb-1">자료실</h3>
-                <p class="text-xs text-gray-400">수업 지도안 & PDF 다운로드</p>
+             <div class="clean-card rounded-3xl p-6 col-span-1 md:col-span-1 row-span-1 flex flex-col justify-center items-center text-center group cursor-pointer fade-in-section hover:bg-slate-50">
+                <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mb-3 text-2xl group-hover:bg-slate-200 transition-colors">📂</div>
+                <h3 class="text-xl font-bold mb-1 text-slate-800">자료실</h3>
+                <p class="text-xs text-slate-500">수업 지도안 다운로드</p>
             </div>
 
         </div>
     </section>
 
     <section id="studio-section" class="py-20 px-6 max-w-7xl mx-auto">
-        <div class="glass-card rounded-[40px] p-10 lg:p-16 relative overflow-hidden text-center lg:text-left fade-in-section">
-            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-radial from-purple-600/30 to-transparent blur-3xl rounded-full translate-x-1/3 -translate-y-1/3"></div>
+        <div class="bg-white rounded-[40px] p-10 lg:p-16 relative overflow-hidden text-center lg:text-left shadow-2xl border border-slate-100 fade-in-section">
+            <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-purple-100 via-pink-50 to-transparent rounded-full translate-x-1/4 -translate-y-1/4 z-0"></div>
 
-            <div class="relative z-10 flex flex-col lg:flex-row items-center gap-12">
+            <div class="relative z-10 flex flex-col lg:flex-row items-center gap-16">
                 <div class="lg:w-2/3">
-                    <span class="text-purple-400 font-bold tracking-widest text-sm uppercase mb-2 block">Special Event</span>
-                    <h2 class="text-4xl lg:text-5xl font-bold mb-6">Agentathon & <br>Copilot Studio</h2>
-                    <p class="text-gray-300 text-lg mb-8 leading-relaxed">
-                        학생들이 직접 AI 에이전트를 만드는 해커톤, '에이전톤'에 참여하세요.<br>
-                        코딩 없이 나만의 챗봇을 만드는 Copilot Studio 가이드를 제공합니다.
+                    <span class="inline-block py-1 px-3 rounded-md bg-purple-100 text-purple-600 font-bold text-xs uppercase mb-4 tracking-wider">Special Event</span>
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-6 text-slate-900">Agentathon & <br>Copilot Studio</h2>
+                    <p class="text-slate-600 text-lg mb-10 leading-relaxed font-medium">
+                        학생들이 직접 AI 에이전트를 만드는 해커톤 '에이전톤'에 도전하세요.<br>
+                        코딩 지식이 없어도 괜찮습니다. <span class="text-purple-600 font-bold">Copilot Studio</span>가 도와드립니다.
                     </p>
                     <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
-                        <button class="bg-white text-black px-8 py-3 rounded-full font-bold hover:bg-gray-200 transition-colors">
+                        <button class="bg-slate-900 text-white px-8 py-3.5 rounded-full font-bold hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
                             에이전톤 신청하기
                         </button>
-                        <button class="border border-white/30 px-8 py-3 rounded-full font-bold hover:bg-white/10 transition-colors">
-                            스튜디오 사용법
+                        <button class="bg-white border-2 border-slate-200 text-slate-700 px-8 py-3.5 rounded-full font-bold hover:bg-slate-50 hover:border-slate-300 transition-all">
+                            스튜디오 가이드
                         </button>
                     </div>
                 </div>
                 <div class="lg:w-1/3 flex justify-center">
-                    <div class="relative w-48 h-48">
-                        <div class="absolute inset-0 border-2 border-purple-500/30 rounded-full animate-ping" style="animation-duration: 3s;"></div>
-                        <div class="absolute inset-4 border-2 border-purple-500/50 rounded-full animate-ping" style="animation-duration: 3s; animation-delay: 0.5s;"></div>
-                        <div class="absolute inset-0 flex items-center justify-center bg-purple-900/50 rounded-full backdrop-blur-md border border-purple-400/50">
-                            <span class="text-4xl">🤖</span>
+                    <div class="relative w-56 h-56 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-[3rem] shadow-2xl shadow-purple-200 flex items-center justify-center transform rotate-6 hover:rotate-0 transition-all duration-500 cursor-pointer group">
+                        <div class="absolute inset-0 bg-white/20 rounded-[3rem] blur-xl"></div>
+                        <span class="text-6xl filter drop-shadow-lg group-hover:scale-110 transition-transform">🤖</span>
+                        <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-2xl shadow-xl flex items-center gap-2">
+                            <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+                            <span class="text-xs font-bold text-slate-700">Online</span>
                         </div>
                     </div>
                 </div>
@@ -286,21 +326,21 @@
         </div>
     </section>
 
-    <footer class="border-t border-white/10 mt-20 bg-black/40 backdrop-blur-xl">
+    <footer class="bg-white border-t border-slate-100 mt-20">
         <div class="max-w-7xl mx-auto px-6 py-12">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                 <div class="text-center md:text-left">
-                    <h4 class="font-bold text-xl mb-2">Microsoft Elevate Korea</h4>
-                    <p class="text-gray-500 text-sm">Empowering every student on the planet to achieve more.</p>
+                    <h4 class="font-bold text-xl mb-1 text-slate-800">Microsoft Elevate Korea</h4>
+                    <p class="text-slate-500 text-sm">Empowering every student on the planet to achieve more.</p>
                 </div>
-                <div class="flex gap-6 text-sm text-gray-400">
-                    <a href="#" class="hover:text-white">개인정보처리방침</a>
-                    <a href="#" class="hover:text-white">이용약관</a>
-                    <a href="#" class="hover:text-white">문의하기</a>
+                <div class="flex gap-8 text-sm font-medium text-slate-500">
+                    <a href="#" class="hover:text-ms-blue transition-colors">개인정보처리방침</a>
+                    <a href="#" class="hover:text-ms-blue transition-colors">이용약관</a>
+                    <a href="#" class="hover:text-ms-blue transition-colors">문의하기</a>
                 </div>
             </div>
-            <div class="text-center mt-12 text-xs text-gray-600">
-                &copy; 2024 Microsoft Elevate Korea. All rights reserved. This is a demo site.
+            <div class="text-center mt-12 text-xs text-slate-400">
+                &copy; 2024 Microsoft Elevate Korea. All rights reserved.
             </div>
         </div>
     </footer>
@@ -309,35 +349,35 @@
         // 1. GSAP Animation Init
         gsap.registerPlugin(ScrollTrigger);
 
-        // 히어로 섹션 텍스트 등장
+        // 히어로 텍스트 등장 (순차적)
         gsap.from(".hero-text > *", {
             y: 30,
             opacity: 0,
             duration: 1,
-            stagger: 0.2,
+            stagger: 0.15,
             ease: "power3.out"
         });
 
         // 지도 등장
         gsap.from(".map-container", {
-            x: 30,
+            scale: 0.95,
             opacity: 0,
             duration: 1.2,
-            delay: 0.5,
+            delay: 0.3,
             ease: "power3.out"
         });
 
-        // 스크롤 시 섹션 등장 애니메이션
+        // 스크롤 시 섹션 등장
         gsap.utils.toArray('.fade-in-section').forEach(section => {
             gsap.from(section, {
                 scrollTrigger: {
                     trigger: section,
-                    start: "top 80%",
+                    start: "top 85%",
                     toggleActions: "play none none reverse"
                 },
-                y: 50,
+                y: 40,
                 opacity: 0,
-                duration: 1,
+                duration: 0.8,
                 ease: "power3.out"
             });
         });
@@ -345,51 +385,44 @@
         // 2. Map Interaction Logic
         const mapPoints = document.querySelectorAll('.map-point');
         const tooltip = document.getElementById('tooltip');
+        const mapContainer = document.querySelector('.map-container');
         
-        // 지도 포인트 마우스 이벤트
         mapPoints.forEach(point => {
             point.addEventListener('mouseenter', (e) => {
                 const name = point.getAttribute('data-name');
-                
-                // 툴팁 내용 및 위치 설정
-                tooltip.textContent = name;
+                tooltip.innerHTML = `${name}<div class='absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-800 rotate-45'></div>`;
                 tooltip.style.opacity = '1';
                 
-                // 포인트 하이라이트 효과 (GSAP)
-                gsap.to(point, { scale: 1.5, duration: 0.3, fill: "#00A4EF" });
+                // 포인트 강조
+                gsap.to(point, { 
+                    attr: { r: 10 }, 
+                    fill: "#0078D4", 
+                    duration: 0.3 
+                });
             });
 
             point.addEventListener('mousemove', (e) => {
-                // 부모 SVG 기준 좌표 계산이 필요하지만, 간단하게 오프셋으로 처리
-                // 실제 구현시에는 SVG 좌표계 변환이나 pageX/Y 사용
-                const rect = document.querySelector('.map-container').getBoundingClientRect();
-                tooltip.style.left = (e.clientX - rect.left + 15) + 'px';
-                tooltip.style.top = (e.clientY - rect.top - 30) + 'px';
+                const rect = mapContainer.getBoundingClientRect();
+                tooltip.style.left = (e.clientX - rect.left) + 'px';
+                tooltip.style.top = (e.clientY - rect.top - 40) + 'px';
             });
 
             point.addEventListener('mouseleave', () => {
                 tooltip.style.opacity = '0';
-                gsap.to(point, { scale: 1, duration: 0.3, fill: "rgba(255, 255, 255, 0.3)" });
+                gsap.to(point, { 
+                    attr: { r: point.getAttribute('data-name').includes('경기') ? 10 : (point.getAttribute('data-name').includes('서울') ? 6 : 5) }, // 원래 사이즈로 복귀
+                    fill: "white", 
+                    duration: 0.3 
+                });
             });
 
-            // 클릭 시 해당 교육청 O365 페이지로 이동 (새 탭)
             point.addEventListener('click', () => {
                 const url = point.getAttribute('data-url');
                 const name = point.getAttribute('data-name');
-                
-                if(confirm(`${name} Microsoft 365 가입/지원 페이지로 이동하시겠습니까?\n계정 문제를 가장 먼저 해결할 수 있습니다.`)) {
+                if(confirm(`${name} M365 지원 페이지로 이동하여\n계정 문제를 해결하시겠습니까?`)) {
                     window.open(url, '_blank');
                 }
             });
-        });
-
-        // 마우스 움직임에 따른 배경 오로라 시차 효과 (Parallax)
-        document.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth - e.pageX) / 100;
-            const y = (window.innerHeight - e.pageY) / 100;
-            
-            const aurora = document.querySelector('.aurora-bg');
-            aurora.style.transform = `translateX(${x}px) translateY(${y}px) scale(1.1)`;
         });
 
     </script>
