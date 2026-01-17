@@ -182,106 +182,45 @@
             </div>
         </div>
 
-        <div class="lg:w-1/2 relative flex justify-center items-center h-[500px] lg:h-[700px] w-full map-container">
-            
-            <svg viewBox="0 0 400 600" class="w-full h-full drop-shadow-xl" id="korea-map" aria-label="대한민국 교육청 지도" role="img">
-              <!-- 1) Korea silhouette (stylized but recognizable) -->
-              <path
-                id="korea-outline"
-                d="M210 45
-                   C230 60 245 85 240 105
-                   C235 125 250 150 265 165
-                   C285 185 295 210 285 235
-                   C275 260 285 285 300 305
-                   C320 330 315 360 300 380
-                   C285 400 290 430 305 455
-                   C322 485 305 515 280 530
-                   C260 542 255 560 245 575
-                   C230 595 200 598 185 580
-                   C170 560 150 545 135 535
-                   C110 517 95 490 105 465
-                   C115 440 110 415 95 390
-                   C80 365 85 335 105 315
-                   C120 300 122 275 115 250
-                   C105 220 115 190 135 170
-                   C150 155 145 130 130 110
-                   C115 90 120 65 140 55
-                   C160 45 185 35 210 45 Z"
-                fill="rgba(255,255,255,0.55)"
-                stroke="rgba(0,120,212,0.22)"
-                stroke-width="2"
-              />
-            
-              <!-- subtle inner highlight -->
-              <path
-                d="M205 75
-                   C220 90 226 110 220 125
-                   C213 145 225 165 242 182
-                   C258 200 265 220 255 240
-                   C245 260 255 285 270 305
-                   C288 330 280 360 264 376
-                   C248 392 252 420 266 445
-                   C282 470 265 495 245 508
-                   C228 519 220 540 210 555
-                   C198 572 180 570 170 555
-                   C160 540 145 525 132 515
-                   C112 499 103 478 112 458
-                   C122 438 120 415 105 392
-                   C92 372 96 346 112 330
-                   C128 314 130 290 122 268
-                   C112 240 120 215 135 198
-                   C148 182 145 160 132 142
-                   C118 122 124 98 142 88
-                   C160 78 182 68 205 75 Z"
-                fill="rgba(0,120,212,0.04)"
-              />
-            
-              <!-- 2) Route lines (animated dashed) -->
-              <g id="map-routes" class="map-line" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <!-- main spine -->
-                <path d="M170 110 C175 145 175 175 178 210 C181 250 185 290 190 335 C195 385 202 430 208 470" />
-                <!-- branches -->
-                <path d="M178 210 C160 215 142 225 128 240" />
-                <path d="M190 335 C220 330 245 320 265 305" />
-                <path d="M208 470 C240 460 265 440 285 418" />
-                <path d="M175 155 C155 150 138 140 124 128" />
-              </g>
-            
-              <!-- 3) Points -->
-              <g id="map-points">
-                <!-- 수도권 -->
-                <circle cx="165" cy="120" r="6" class="map-point" data-r="6" data-key="Seoul" />
-                <circle cx="148" cy="132" r="5" class="map-point" data-r="5" data-key="Incheon" />
-                <circle cx="178" cy="140" r="10" class="map-point" data-r="10" data-key="Gyeonggi" style="opacity:0.65" />
-            
-                <!-- 강원 -->
-                <circle cx="225" cy="125" r="5" class="map-point" data-r="5" data-key="Gangwon" />
-            
-                <!-- 충청 -->
-                <circle cx="175" cy="245" r="5" class="map-point" data-r="5" data-key="Sejong" />
-                <circle cx="205" cy="235" r="5" class="map-point" data-r="5" data-key="Chungbuk" />
-                <circle cx="200" cy="265" r="6" class="map-point" data-r="6" data-key="Daejeon" />
-                <circle cx="165" cy="260" r="5" class="map-point" data-r="5" data-key="Chungnam" />
-            
-                <!-- 영남 -->
-                <circle cx="255" cy="330" r="5" class="map-point" data-r="5" data-key="Gyeongbuk" />
-                <circle cx="245" cy="360" r="6" class="map-point" data-r="6" data-key="Daegu" />
-                <circle cx="295" cy="355" r="5" class="map-point" data-r="5" data-key="Ulsan" />
-                <circle cx="282" cy="400" r="6" class="map-point" data-r="6" data-key="Busan" />
-                <circle cx="225" cy="405" r="5" class="map-point" data-r="5" data-key="Gyeongnam" />
-            
-                <!-- 호남 -->
-                <circle cx="145" cy="360" r="5" class="map-point" data-r="5" data-key="Jeonbuk" />
-                <circle cx="150" cy="410" r="6" class="map-point" data-r="6" data-key="Gwangju" />
-                <circle cx="125" cy="430" r="6" class="map-point" data-r="6" data-key="Jeonnam" />
-            
-                <!-- 제주 -->
-                <circle cx="155" cy="540" r="5" class="map-point" data-r="5" data-key="JeJu" />
-              </g>
+        <div class="lg:w-1/2 relative flex justify-center items-center h-[500px] lg:h-[750px] w-full map-container">
+            <svg viewBox="0 0 400 550" class="w-full h-full drop-shadow-2xl" id="korea-map" xmlns="http://www.w3.org/2000/svg">
+                <path id="korea-outline" 
+                      d="M165 40 L190 45 L220 55 L235 80 L245 120 L260 160 L280 220 L300 280 L310 350 L305 420 L285 460 L260 490 L230 500 L190 495 L160 480 L130 460 L100 440 L85 400 L95 350 L80 300 L90 240 L105 180 L115 130 L130 80 L150 50 Z" 
+                      fill="rgba(255,255,255,0.6)" 
+                      stroke="rgba(0,120,212,0.3)" 
+                      stroke-width="2" />
+                
+                <g class="map-line" fill="none" stroke-linecap="round">
+                    <path d="M155 135 L220 110" /> <path d="M155 135 L175 220" /> <path d="M175 220 L240 320" /> <path d="M175 220 L135 340" /> <path d="M135 340 L145 420" /> <path d="M240 320 L260 410" /> <path d="M145 420 Q 150 480 155 510" /> </g>
+        
+                <g id="map-points">
+                    <circle cx="155" cy="135" r="7" class="map-point" data-key="Seoul" />
+                    <circle cx="135" cy="130" r="5" class="map-point" data-key="Incheon" />
+                    <circle cx="165" cy="115" r="10" class="map-point" data-key="Gyeonggi" style="opacity:0.5" />
+        
+                    <circle cx="230" cy="105" r="6" class="map-point" data-key="Gangwon" />
+        
+                    <circle cx="180" cy="210" r="5" class="map-point" data-key="Sejong" />
+                    <circle cx="205" cy="195" r="5" class="map-point" data-key="Chungbuk" />
+                    <circle cx="190" cy="235" r="6" class="map-point" data-key="Daejeon" />
+                    <circle cx="150" cy="225" r="5" class="map-point" data-key="Chungnam" />
+        
+                    <circle cx="255" cy="290" r="6" class="map-point" data-key="Gyeongbuk" />
+                    <circle cx="245" cy="330" r="6" class="map-point" data-key="Daegu" />
+                    <circle cx="285" cy="355" r="5" class="map-point" data-key="Ulsan" />
+                    <circle cx="270" cy="405" r="7" class="map-point" data-key="Busan" />
+                    <circle cx="230" cy="400" r="6" class="map-point" data-key="Gyeongnam" />
+        
+                    <circle cx="140" cy="330" r="6" class="map-point" data-key="Jeonbuk" />
+                    <circle cx="145" cy="385" r="6" class="map-point" data-key="Gwangju" />
+                    <circle cx="125" cy="430" r="7" class="map-point" data-key="Jeonnam" />
+        
+                    <circle cx="155" cy="520" r="6" class="map-point" data-key="JeJu" />
+                </g>
             </svg>
-            
+        
             <div id="tooltip" class="absolute bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-xl -translate-y-10 opacity-0 transition-opacity pointer-events-none z-20">
-                지역 선택
+                <span id="tooltip-text">지역 선택</span>
                 <div class="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-800 rotate-45"></div>
             </div>
         </div>
@@ -437,23 +376,23 @@
         });
       });
         const offices = {
-          Gyeongnam: "https://sw-ms.gne.go.kr",
-          Daegu: "https://www.o365.dge.go.kr",
           Seoul: "https://o365.sen.go.kr",
-          Busan: "https://o365.pen.go.kr",
           Incheon: "https://o365.ice.go.kr",
           Gyeonggi: "https://cloud.goe.go.kr",
+          Gangwon: "https://office365.gwe.go.kr",
           Sejong: "https://o365.sje.go.kr",
           Chungbuk: "https://cloud.cbe.go.kr",
-          Ulsan: "https://o365.use.go.kr",
           Chungnam: "https://o365.cne.go.kr",
-          Gyeongbuk: "https://365.gyo6.net",
-          JeJu: "https://365.gyo6.net",
           Daejeon: "https://www.dje365.kr",
-          Jeonnam: "https://cloud.cbe.go.kr",
+          Gyeongbuk: "https://365.gyo6.net",
+          Daegu: "https://www.o365.dge.go.kr",
+          Ulsan: "https://o365.use.go.kr",
+          Busan: "https://o365.pen.go.kr",
+          Gyeongnam: "https://sw-ms.gne.go.kr",
           Jeonbuk: "https://getsw.jbe.go.kr",
+          Jeonnam: "https://o365.jne.go.kr/",
           Gwangju: "https://o365.gen.go.kr",
-          Gangwon: "https://office365.gwe.go.kr",
+          JeJu: "https://o365.jje.go.kr/",
         };
         
         const officeNames = {
