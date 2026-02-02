@@ -5,6 +5,7 @@ import M365 from './pages/categories/M365';
 import Copilot from './pages/categories/Copilot';
 import Minecraft from './pages/categories/Minecraft';
 import Teams from './pages/categories/Teams';
+import PostDetail from './pages/PostDetail';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="copilot" element={<Copilot />} />
         <Route path="minecraft" element={<Minecraft />} />
         <Route path="teams" element={<Teams />} />
+        <Route path=":category/:postId" element={<PostDetail />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
