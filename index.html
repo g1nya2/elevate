@@ -701,12 +701,11 @@
         onclick="toggleChat()"
         class="
           group relative w-16 h-16 rounded-full 
-          /* 👇 여기가 수정된 디자인입니다 (파란 그라데이션 + 반투명 + 은은한 그림자) */
+          /* 투명한 블루 그라데이션 */
           bg-gradient-to-tr from-[#0078D4]/85 to-[#00C7F4]/85 backdrop-blur-md
           border border-white/40
           text-white 
           shadow-lg shadow-blue-500/30
-          /* 👆 ----------------------------------------------------------- */
           flex items-center justify-center
           transition-all duration-300 hover:scale-110 active:scale-95
           hover:shadow-blue-500/50 hover:border-white/80
@@ -719,34 +718,31 @@
         </svg>
         
         <span class="absolute top-0 right-0 flex h-4 w-4">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-4 w-4 bg-red-500 border-2 border-white"></span>
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-4 w-4 bg-green-500 border-2 border-white"></span>
         </span>
       </button>
     </div>
   
     <style>
-      /* 스크롤바 커스텀 */
       #webchat::-webkit-scrollbar { width: 6px; }
       #webchat::-webkit-scrollbar-track { background: transparent; }
       #webchat::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
       
-      /* 둥둥 떠다니는 애니메이션 */
       @keyframes float-slow {
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-6px); }
       }
       .animate-float-slow { animation: float-slow 3s ease-in-out infinite; }
       
-      /* 채팅 열렸을 때 버튼 X로 변신 */
       .chat-open .animate-float-slow { 
         animation: none; 
         transform: rotate(45deg); 
-        background: rgba(51, 65, 85, 0.9); /* 닫기 버튼은 짙은 회색 */
+        background: rgba(51, 65, 85, 0.9);
         border-color: transparent;
       }
   
-      /* SDK 내부 스타일 강제 적용 */
+      /* SDK Custom Style */
       .webchat__send-box {
         background: rgba(255,255,255,0.8) !important;
         backdrop-filter: blur(10px);
@@ -788,7 +784,7 @@
       }
   
       async function loadChat() {
-        // ⭐ 아까 확인하신 Secret Key를 여기에 다시 넣어주세요! ⭐
+        // 아까 확인해주신 Secret Key를 그대로 적용해두었습니다.
         const directLineSecret = 'rgfpuYupIP27STK2v0C7jCiBORlq63G3nyUj9Zan58rAp3HAWuSCJQQJ99CBACi5YpzAArohAAABAZBS2kCv.BHfCuXJnH5X8ciQJPMrhYemii9NlbNfkuOoGSIerwxznceY2y0uiJQQJ99CBACi5YpzAArohAAABAZBS1asc'; 
   
         const styleOptions = {
