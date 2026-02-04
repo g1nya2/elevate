@@ -727,22 +727,6 @@
         #webchat::-webkit-scrollbar { width: 6px; }
         #webchat::-webkit-scrollbar-track { background: transparent; }
         #webchat::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
-
-        /* WebChat 안에서만 markdown 기본 가독성 복구 */
-        #webchat .webchat__basic-transcript__text ul,
-        #webchat .webchat__basic-transcript__text ol {
-          list-style: revert !important;
-          margin: 0.5rem 0 0.5rem 1.25rem !important;
-          padding-left: 1.25rem !important;
-        }
-        
-        #webchat .webchat__basic-transcript__text li {
-          margin: 0.25rem 0 !important;
-        }
-        
-        #webchat .webchat__basic-transcript__text p {
-          margin: 0.5rem 0 !important;
-        }
         
         @keyframes float-slow {
           0%, 100% { transform: translateY(0); }
@@ -809,38 +793,15 @@
           const directLineSecret = 'REPLACE_MY_SECRET_KEY';
     
           // 봇에게 "시작(startConversation)" 이벤트를 보내는 스토어
-          const store = window.WebChat.createStore(
-            {},
-            ({ dispatch }) => next => action => {
-          
-              // ✅ 1. 연결되면 startConversation 이벤트 전송 (기존 로직 유지)
-              if (action.type === 'DIRECT_LINE/CONNECT_FULFILLED') {
-                dispatch({
-                  type: 'WEB_CHAT/SEND_EVENT',
-                  payload: { name: 'startConversation', type: 'event' }
-                });
-              }
-          
-              // ✅ 2. 봇 메시지 들어올 때 markdown 강제
-              if (action.type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
-                const activity = action.payload?.activity;
-          
-                if (
-                  activity &&
-                  activity.from?.role === 'bot' &&
-                  activity.text &&
-                  activity.textFormat !== 'markdown'
-                ) {
-                  action.payload.activity = {
-                    ...activity,
-                    textFormat: 'markdown'
-                  };
-                }
-              }
-          
-              return next(action);
+          const store = window.WebChat.createStore({}, ({ dispatch }) => next => action => {
+            if (action.type === 'DIRECT_LINE/CONNECT_FULFILLED') {
+              dispatch({
+                type: 'WEB_CHAT/SEND_EVENT',
+                payload: { name: 'startConversation', type: 'event' }
+              });
             }
-          );
+            return next(action);
+          });
     
           const styleOptions = {
             accent: '#0078D4',
