@@ -1,0 +1,40 @@
+name: Deploy static content to Pages
+
+on:
+  push:
+    branches: ["main"]  # main 브랜치에 코드가 올라오면 실행
+
+# 권한 설정
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 배포 작업
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 🌟 [핵심] 코드 내의 임시 문구를 진짜 시크릿 키로 교체하는 단계
+      - name: Inject Secret Key
+        run: |
+          # index.html 파일에서 'REPLACE_MY_SECRET_KEY'를 찾아서 GitHub Secret으로 바꿈
+          sed -i 's|REPLACE_MY_SECRET_KEY|${{ secrets.DIRECT_LINE_SECRET }}|g' index.html
+        # ⚠️ 만약 HTML 파일명이 index.html이 아니라면 위 이름을 수정하세요!
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+          
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
