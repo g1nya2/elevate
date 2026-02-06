@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
 import M365 from './pages/categories/M365';
@@ -12,7 +12,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/blog" element={<Blog />}>
+      <Route path="/blog" element={<Outlet />}>
+        <Route index element={<Blog />} />
         <Route path="m365" element={<M365 />} />
         <Route path="copilot" element={<Copilot />} />
         <Route path="minecraft" element={<Minecraft />} />
