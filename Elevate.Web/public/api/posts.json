@@ -1,0 +1,19 @@
+{
+  "items": [
+    {
+      "id": "copilot/copilot",
+      "slug": "copilot",
+      "title": "Copilot에 대해",
+      "excerpt": "H1태그",
+      "imageUrl": "/images/sampleImage.jpg",
+      "author": {
+        "name": "Unknown"
+      },
+      "publishedAt": "2026-01-01",
+      "likes": 0,
+      "comments": 0,
+      "category": "copilot"
+    }
+  ],
+  "total": 1
+}

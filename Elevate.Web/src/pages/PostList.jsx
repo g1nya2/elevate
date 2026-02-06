@@ -40,52 +40,29 @@ export default function PostList() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`/api/posts?category=${encodeURIComponent(category)}&page=${pageParam}&pageSize=${PAGE_SIZE}`, { signal: controller.signal });
-        const contentType = res.headers.get('content-type') || '';
-
+        // Fetch static posts.json
+        const res = await fetch('/api/posts.json', { signal: controller.signal });
         if (!res.ok) {
-          // try to consume body for diagnostics but don't expose raw HTML to UI
-          const bodyText = await res.text().catch(() => '');
-          if (contentType.includes('application/json')) {
-            try {
-              const errJson = JSON.parse(bodyText || '{}');
-              throw new Error(errJson.message || `Server error ${res.status}`);
-            } catch (parseErr) {
-              throw new Error(`Server error ${res.status} ${res.statusText}`);
-            }
-          }
           throw new Error(`Server error ${res.status} ${res.statusText}`);
         }
-
-        if (!contentType.includes('application/json')) {
-          // backend returned HTML (likely dev fallback). Surface a friendly message and use mock data.
-          throw new Error('Server returned non-JSON response; using mock data for preview.');
-        }
-
         const data = await res.json();
-        // expect { items: [], total: number }
-        setPosts(data.items || []);
-        setTotal(typeof data.total === 'number' ? data.total : (data.items || []).length);
+        const allItems = data.items || [];
+
+        // Client-side filtering by category
+        const filtered = allItems.filter((p) => p.category === category);
+
+        // Client-side pagination
+        const start = (pageParam - 1) * PAGE_SIZE;
+        const paginated = filtered.slice(start, start + PAGE_SIZE);
+
+        setPosts(paginated);
+        setTotal(filtered.length);
       } catch (err) {
-        // fallback: mock sample when API fails
         if (err.name === 'AbortError') return;
-        // store error internally but do not render raw message to the UI
         setError(err.message || 'Failed to load posts');
         console.warn('PostList fetch error:', err.message || err);
-        // simple mock data to allow UI rendering
-        const mock = Array.from({ length: Math.min(PAGE_SIZE, 6) }).map((_, i) => ({
-          id: `mock-${pageParam}-${i}`,
-          slug: `mock-${pageParam}-${i}`,
-          title: `샘플 포스트 ${i + 1 + (pageParam - 1) * PAGE_SIZE}`,
-          excerpt: '모의 데이터: 서버가 응답하지 않을 때 표시됩니다.',
-          imageUrl: '',
-          author: { name: '테스트' },
-          publishedAt: '2026-02-06',
-          likes: Math.floor(Math.random() * 200),
-          comments: Math.floor(Math.random() * 20),
-        }));
-        setPosts(mock);
-        setTotal(50);
+        setPosts([]);
+        setTotal(0);
       } finally {
         setLoading(false);
       }
@@ -110,16 +87,16 @@ export default function PostList() {
   }
 
   return (
-    <main className="w-full px-12 py-8">
-      <header className="mb-10 flex items-center justify-between">
+    <main className="w-full px-4 sm:px-8 lg:px-12 py-8">
+      <header className="mb-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">{displayName} Posts</h1>
-        <div className="w-80"><SearchBar placeholder={`Search ${displayName}`} onSubmit={(q) => { setSearchParams({ page: '1', q }); }} /></div>
+        <div className="w-full sm:w-80"><SearchBar placeholder={`Search ${displayName}`} onSubmit={(q) => { setSearchParams({ page: '1', q }); }} /></div>
       </header>
 
-      <div className="grid grid-cols-12 gap-6">
-        <aside className="col-span-2">
-          <div className="space-y-3 padding-4 ">
-            <ul className="space-y-2 mt-2">
+      <div className="flex flex-col lg:grid lg:grid-cols-12 gap-6">
+        <aside className="w-full lg:col-span-2">
+          <div className="space-y-3">
+            <ul className="flex flex-wrap lg:flex-col gap-2 mt-2">
               {VALID_CATEGORIES.map((c) => (
                 <li key={c}>
                   <Link to={`/posts/${c}`} className={`inline-block px-4 py-2 rounded-full border ${c === category ? 'bg-ms-blue text-white' : 'bg-white text-slate-700'}`}>
@@ -131,7 +108,7 @@ export default function PostList() {
           </div>
         </aside>
 
-        <section className="col-span-9">
+        <section className="w-full lg:col-span-10">
           {loading && <div className="text-center py-8">로딩 중...</div>}
           <PostGrid posts={posts} />
           <Pagination currentPage={pageParam} totalPages={totalPages} onPageChange={handlePageChange} />

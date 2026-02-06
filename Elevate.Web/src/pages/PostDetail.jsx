@@ -1,5 +1,9 @@
 import { useParams, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { useEffect, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
 const VALID_CATEGORIES = ['m365', 'copilot', 'minecraft', 'teams'];
 
@@ -10,27 +14,54 @@ const CATEGORY_DISPLAY_NAMES = {
     'teams': 'Microsoft Teams'
 };
 
-// slug를 사람이 읽기 쉬운 제목으로 변환
-const slugToTitle = (slug) => {
-    return slug
-        .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-};
-
 const PostDetail = () => {
     const { category, postId } = useParams();
-    
+
     // 카테고리를 소문자로 변환하여 검증
     const normalizedCategory = category?.toLowerCase();
-    
+
+    const [post, setPost] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [notFound, setNotFound] = useState(false);
+
+    useEffect(() => {
+        if (!normalizedCategory || !postId) return;
+        const controller = new AbortController();
+        async function load() {
+            setLoading(true);
+            setNotFound(false);
+            try {
+                const res = await fetch(`/api/posts/${normalizedCategory}--${postId}.json`, { signal: controller.signal });
+                if (!res.ok) {
+                    setNotFound(true);
+                    return;
+                }
+                const data = await res.json();
+                setPost(data);
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.error('PostDetail fetch error:', err);
+                    setNotFound(true);
+                }
+            } finally {
+                setLoading(false);
+            }
+        }
+        load();
+        return () => controller.abort();
+    }, [normalizedCategory, postId]);
+
     // 유효하지 않은 카테고리인 경우 404로 리다이렉트
     if (!VALID_CATEGORIES.includes(normalizedCategory)) {
         return <Navigate to="*" replace />;
     }
 
+    if (notFound) {
+        return <Navigate to="*" replace />;
+    }
+
     const categoryDisplayName = CATEGORY_DISPLAY_NAMES[normalizedCategory];
-    const postTitle = slugToTitle(postId);
+    const postTitle = post?.title || postId;
 
     return (
         <div className="relative min-h-screen font-sans selection:bg-ms-blue/20 selection:text-ms-blue">
@@ -61,27 +92,32 @@ const PostDetail = () => {
                             <span>{categoryDisplayName}</span>
                         </div>
 
-                        {/* Post Title */}
-                        <h1 className="text-4xl lg:text-5xl font-bold text-gradient mb-4 tracking-tight">
-                            {postTitle}
-                        </h1>
+                        {loading && <div className="text-center py-8 text-slate-500">로딩 중...</div>}
 
-                        {/* Category Badge */}
-                        <div className="mb-8">
-                            <span className="inline-block px-4 py-2 bg-ms-blue/10 text-ms-blue rounded-full text-sm font-medium">
-                                {categoryDisplayName}
-                            </span>
-                        </div>
+                        {!loading && post && (
+                            <>
+                                {/* Post Title */}
+                                <h1 className="text-4xl lg:text-5xl font-bold text-gradient mb-4 tracking-tight">
+                                    {post.title}
+                                </h1>
 
-                        {/* Post Content Placeholder */}
-                        <div className="prose prose-lg max-w-none text-slate-600">
-                            <p className="text-xl leading-relaxed">
-                                게시글 내용이 곧 제공됩니다.
-                            </p>
-                            <p className="mt-4 text-base">
-                                Post ID: <code className="px-2 py-1 bg-slate-100 rounded">{postId}</code>
-                            </p>
-                        </div>
+                                {/* Meta */}
+                                <div className="mb-8 flex items-center gap-4 text-sm text-slate-500">
+                                    <span className="inline-block px-4 py-2 bg-ms-blue/10 text-ms-blue rounded-full font-medium">
+                                        {categoryDisplayName}
+                                    </span>
+                                    <span>{post.publishedAt}</span>
+                                    <span>by {post.author?.name || 'Unknown'}</span>
+                                </div>
+
+                                {/* Post Body */}
+                                <article className="prose prose-lg max-w-none text-slate-700">
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                                        {post.content}
+                                    </ReactMarkdown>
+                                </article>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

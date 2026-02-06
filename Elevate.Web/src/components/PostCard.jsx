@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const PostCard = ({ post }) => {
-  const { id, slug, title, excerpt, imageUrl, author, publishedAt, likes = 0, comments = 0 } = post;
-  const to = `/posts/${slug || id}`;
+  const { id, slug, title, excerpt, imageUrl, author, publishedAt, likes = 0, comments = 0, category } = post;
+  const to = `/posts/${category || ''}/${slug || id}`;
 
   return (
-    <article className="reveal-card post-card rounded-2xl p-6 shadow-soft transition group bg-white h-full">
-      <Link to={to} aria-label={`Open post ${title}`} className="block hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-ms-blue/30 h-full">
+    <article className="hover:shadow-lg reveal-card post-card rounded-2xl p-6 shadow-soft transition group bg-white h-full w-full max-w-[320px]">
+      <Link to={to} aria-label={`Open post ${title}`} className="block  focus:outline-none focus:ring-2 focus:ring-ms-blue/30 h-full">
         <div className="flex flex-col h-full">
           <div className="w-full rounded-md overflow-hidden bg-slate-100" style={{height: 160}}>
             {imageUrl ? (
