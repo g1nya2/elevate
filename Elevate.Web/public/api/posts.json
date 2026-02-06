@@ -1,6 +1,48 @@
 {
   "items": [
     {
+      "id": "teams/copilot",
+      "slug": "copilot",
+      "title": "Teams에 대해",
+      "excerpt": "H1태그",
+      "imageUrl": "/images/sampleImage.jpg",
+      "author": {
+        "name": "Unknown"
+      },
+      "publishedAt": "2026-01-01",
+      "likes": 0,
+      "comments": 0,
+      "category": "teams"
+    },
+    {
+      "id": "minecraft/copilot",
+      "slug": "copilot",
+      "title": "Minecraft에 대해",
+      "excerpt": "H1태그",
+      "imageUrl": "/images/sampleImage.jpg",
+      "author": {
+        "name": "Unknown"
+      },
+      "publishedAt": "2026-01-01",
+      "likes": 0,
+      "comments": 0,
+      "category": "minecraft"
+    },
+    {
+      "id": "m365/copilot",
+      "slug": "copilot",
+      "title": "M365에 대해",
+      "excerpt": "H1태그",
+      "imageUrl": "/images/sampleImage.jpg",
+      "author": {
+        "name": "Unknown"
+      },
+      "publishedAt": "2026-01-01",
+      "likes": 0,
+      "comments": 0,
+      "category": "m365"
+    },
+    {
       "id": "copilot/copilot",
       "slug": "copilot",
       "title": "Copilot에 대해",
@@ -15,5 +57,5 @@
       "category": "copilot"
     }
   ],
-  "total": 1
+  "total": 4
 }

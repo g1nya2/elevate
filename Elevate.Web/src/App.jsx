@@ -9,11 +9,9 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/blog" element={<Outlet />}>
-        <Route index element={<Blog />} />
-        <Route path=":category" element={<PostList />} />
-        <Route path=":category/:postId" element={<PostDetail />} />
-      </Route>
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/posts/:category" element={<PostList />} />
+      <Route path="/posts/:category/:postId" element={<PostDetail />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
