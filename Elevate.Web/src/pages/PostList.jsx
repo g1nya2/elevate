@@ -17,6 +17,9 @@ const DISPLAY_NAMES = {
 
 const VALID_CATEGORIES = Object.keys(DISPLAY_NAMES);
 
+const normalizeTag = (tag) => (tag ?? '').toString().trim().toLowerCase();
+const normalizeTagList = (list = []) => Array.from(new Set(list.map(normalizeTag).filter(Boolean)));
+
 export default function PostList() {
   const { category } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,10 +28,10 @@ export default function PostList() {
 
   // Parse selected tags from URL query param
   const tagsParam = searchParams.get('tags') || '';
-  const selectedTags = useMemo(() => 
-    tagsParam ? tagsParam.split(',').map(t => t.trim().toLowerCase()).filter(Boolean) : [],
-    [tagsParam]
-  );
+  const selectedTags = useMemo(() => {
+    if (!tagsParam) return [];
+    return normalizeTagList(tagsParam.split(','));
+  }, [tagsParam]);
 
   const [allPosts, setAllPosts] = useState([]);
   const [allTags, setAllTags] = useState([]);
@@ -53,14 +56,19 @@ export default function PostList() {
         }
         const data = await res.json();
         const allItems = data.items || [];
-        setAllTags(data.allTags || []);
+        const normalizedAllTags = normalizeTagList(data.allTags || []);
+        const normalizedItems = allItems.map((p) => ({
+          ...p,
+          tags: normalizeTagList(p.tags || []),
+        }));
+        setAllTags(normalizedAllTags);
 
         // Client-side filtering by category
         let filtered;
         if (category === 'all') {
-          filtered = allItems;
+          filtered = normalizedItems;
         } else {
-          filtered = allItems.filter((p) => p.category === category);
+          filtered = normalizedItems.filter((p) => p.category === category);
         }
         setAllPosts(filtered);
       } catch (err) {
@@ -78,12 +86,12 @@ export default function PostList() {
     return () => controller.abort();
   }, [category, isValidCategory]);
 
-  // Filter posts by selected tags (OR condition)
+  // Filter posts by selected tags (AND condition)
   const filteredPosts = useMemo(() => {
     if (selectedTags.length === 0) return allPosts;
     return allPosts.filter((p) => {
       const postTags = p.tags || [];
-      return selectedTags.some((t) => postTags.includes(t));
+      return selectedTags.every((t) => postTags.includes(t));
     });
   }, [allPosts, selectedTags]);
 
@@ -111,11 +119,12 @@ export default function PostList() {
   };
 
   const handleTagToggle = (tag) => {
+    const normalizedTag = normalizeTag(tag);
     let newTags;
-    if (selectedTags.includes(tag)) {
-      newTags = selectedTags.filter((t) => t !== tag);
+    if (selectedTags.includes(normalizedTag)) {
+      newTags = selectedTags.filter((t) => t !== normalizedTag);
     } else {
-      newTags = [...selectedTags, tag];
+      newTags = [...selectedTags, normalizedTag];
     }
     updateUrlParams({ 
       tags: newTags.length > 0 ? newTags.join(',') : '',
