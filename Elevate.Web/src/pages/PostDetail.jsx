@@ -102,13 +102,26 @@ const PostDetail = () => {
                                 </h1>
 
                                 {/* Meta */}
-                                <div className="mb-8 flex items-center gap-4 text-sm text-slate-500">
+                                <div className="mb-6 flex items-center gap-4 text-sm text-slate-500">
                                     <span className="inline-block px-4 py-2 bg-ms-blue/10 text-ms-blue rounded-full font-medium">
                                         {categoryDisplayName}
                                     </span>
                                     <span>{post.publishedAt}</span>
-                                    <span>by {post.author?.name || 'Unknown'}</span>
                                 </div>
+
+                                {/* Tags */}
+                                {Array.isArray(post.tags) && post.tags.length > 0 && (
+                                    <div className="mb-8 flex flex-wrap gap-2 text-sm">
+                                        {post.tags.map((tag) => (
+                                            <span
+                                                key={tag}
+                                                className="px-3 py-1 rounded-full border border-slate-200 bg-slate-50 text-slate-600"
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
 
                                 {/* Post Body */}
                                 <article className="prose prose-lg max-w-none text-slate-700">
