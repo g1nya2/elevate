@@ -21,6 +21,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with: 
+          node-version: 18
+          cache: 'npm'
+
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Convert blog posts
+        run: npm run generate-posts
+
       # 🌟 [핵심] 코드 내의 임시 문구를 진짜 시크릿 키로 교체하는 단계
       - name: Inject Secret Key
         run: |
@@ -28,13 +41,12 @@ jobs:
           sed -i 's|REPLACE_MY_SECRET_KEY|${{ secrets.DIRECT_LINE_SECRET }}|g' index.html
         # ⚠️ 만약 HTML 파일명이 index.html이 아니라면 위 이름을 수정하세요!
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      
+      # ⭐ build 폴더만 업로드
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
-          
+          path: './build'
+
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
