@@ -10,9 +10,22 @@ const Footer = () => {
                         </p>
                     </div>
                     <div className="flex gap-8 text-sm font-medium text-slate-500">
-                        <a href="#" className="hover:text-ms-blue transition-colors">개인정보처리방침</a>
-                        <a href="#" className="hover:text-ms-blue transition-colors">이용약관</a>
-                        <a href="#" className="hover:text-ms-blue transition-colors">문의하기</a>
+                        <a
+                            href="https://www.microsoft.com/ko-kr/privacy/privacystatement"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-ms-blue transition-colors"
+                        >
+                        개인정보처리방침
+                        </a>
+
+                        <a href="https://www.microsoft.com/ko-kr/servicesagreement"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-ms-blue transition-colors"
+                        >
+                        이용약관
+                        </a>
                     </div>
                 </div>
                 <div className="text-center mt-12 text-xs text-slate-400">

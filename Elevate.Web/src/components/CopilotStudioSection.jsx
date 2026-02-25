@@ -46,7 +46,7 @@ const CopilotStudioSection = () => {
                             </a>
 
                             <a
-                                href="https://github.com/oneot/elevate/blob/main/blog/01_CopilotStudioHandsOn.md"
+                                href="https://github.com/oneot/copilotagenthon/blob/main/01_CopilotAgenthon_%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0.md"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="relative group overflow-hidden inline-flex items-center justify-center 
