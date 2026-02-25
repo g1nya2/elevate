@@ -178,8 +178,16 @@ export default function PostList() {
   }
 
   return (
-    <main className="w-full px-4 sm:px-6 lg:px-12 py-8">
-      <header className="mb-10 flex flex-col gap-5">
+    <div className="relative min-h-screen">
+      {/* Background Blobs (same as Home) */}
+      <div className="pastel-bg">
+        <div className="blob blob-1"></div>
+        <div className="blob blob-2"></div>
+        <div className="blob blob-3"></div>
+      </div>
+
+      <main className="w-full px-4 sm:px-6 lg:px-12 py-8">
+        <header className="mb-10 flex flex-col gap-5">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3 sm:gap-4">
             <Logo isBlog={true}/>
@@ -232,7 +240,8 @@ export default function PostList() {
             />
           </aside>
         )}
-      </div>
-    </main>
+        </div>
+      </main>
+    </div>
   );
 }
