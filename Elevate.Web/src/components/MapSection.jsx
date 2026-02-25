@@ -12,12 +12,21 @@ const MapSection = () => {
 
     const handleMapPointEnter = (e, key) => {
         const name = officeNames[key] || key || "지역";
-        const rect = mapContainerRef.current.getBoundingClientRect();
+        const mapRect = mapContainerRef.current.getBoundingClientRect();
+        
+        // circle 요소의 실제 화면상 위치를 정확히 계산
+        const circleRect = e.target.getBoundingClientRect();
+        const circleCenterX = circleRect.left + circleRect.width / 2;
+        const circleCenterY = circleRect.top + circleRect.height / 2;
+        
+        // 핀의 반경과 마진을 고려하여 말풍선 위치 계산
+        const pinRadius = parseFloat(e.target.getAttribute('r')) || 8;
+        const tooltipOffset = pinRadius + 35;
         
         setTooltip({
             visible: true,
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top - 40,
+            x: circleCenterX - mapRect.left,
+            y: circleCenterY - mapRect.top - tooltipOffset,
             text: name
         });
         setHoveredRegion(key);
@@ -25,11 +34,20 @@ const MapSection = () => {
 
     const handleMapPointMove = (e) => {
         if (!tooltip.visible) return;
-        const rect = mapContainerRef.current.getBoundingClientRect();
+        const mapRect = mapContainerRef.current.getBoundingClientRect();
+        
+        // 마우스 움직임에 따라 실시간으로 위치 업데이트
+        const circleRect = e.target.getBoundingClientRect();
+        const circleCenterX = circleRect.left + circleRect.width / 2;
+        const circleCenterY = circleRect.top + circleRect.height / 2;
+        
+        const pinRadius = parseFloat(e.target.getAttribute('r')) || 8;
+        const tooltipOffset = pinRadius + 25;
+        
         setTooltip(prev => ({
             ...prev,
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top - 40,
+            x: circleCenterX - mapRect.left,
+            y: circleCenterY - mapRect.top - tooltipOffset,
         }));
     };
 
