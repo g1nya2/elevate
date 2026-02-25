@@ -7,9 +7,9 @@ const Navigation = () => {
                 <Logo />
 
                 <div className="hidden md:flex gap-8 text-sm font-semibold text-slate-500">
-                    <a href="#map-section" className="hover:text-ms-blue transition-colors">Account</a>
-                    <a href="#m365-section" className="hover:text-ms-blue transition-colors">Product</a>
-                    <a href="#studio-section" className="hover:text-ms-blue transition-colors">AI Skilling</a>
+                    <a href="#map-section" className="hover:text-ms-blue transition-colors">시작하기</a>
+                    <a href="#m365-section" className="hover:text-ms-blue transition-colors">블로그</a>
+                    <a href="#studio-section" className="hover:text-ms-blue transition-colors">새로운 소식</a>
                 </div>
 
                 <a
