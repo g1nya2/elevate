@@ -57,7 +57,7 @@ const MEESection = () => {
                         <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
                             
                             <a
-                                href="https://youtu.be/oPiDdjjA5iU?si=JnMuHb-2SXHwTAcd"
+                                href="https://www.youtube.com/watch?v=SfK1hajr5qY&list=PLGh_JNxzXsX-eviPh2Y30PsLbIiEbP8Ai"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="relative group overflow-hidden inline-flex items-center justify-center 
