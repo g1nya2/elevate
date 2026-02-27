@@ -11,7 +11,7 @@ excerpt: ‘분석가(Analyst)’로 수행평가 결과 바로 수업에 쓰기
 본 시나리오는 Copilot 사용 환경을 기준으로 진행합니다. <br>
 자세한 플랜은 [Microsoft 365 Copilot 플랜 및 가격—비즈니스용 AI | Microsoft 365](https://www.microsoft.com/ko-kr/microsoft-365-copilot/pricing) 을 참고하세요.
 
-📚 STEP 0. 사전 준비 환경
+# 📚 STEP 0. 사전 준비 환경
 
 **사용 데이터**
 
