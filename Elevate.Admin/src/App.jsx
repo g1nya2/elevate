@@ -1,12 +1,20 @@
+import { Navigate, Route, Routes } from 'react-router-dom'
+import Layout from './components/Layout.jsx'
+import NotFound from './pages/NotFound.jsx'
+import PostEditor from './pages/PostEditor.jsx'
+import PostsList from './pages/PostsList.jsx'
+
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-900">
-          Elevate Admin
-        </h1>
-      </div>
-    </div>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<Navigate to="/posts" replace />} />
+        <Route path="/posts" element={<PostsList />} />
+        <Route path="/posts/new" element={<PostEditor />} />
+        <Route path="/posts/:postId" element={<PostEditor />} />
+      </Route>
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   )
 }
 
