@@ -2,14 +2,10 @@ title: Minecraft Education Block Coding
 tags: [minecraft, gaming, coding]
 date: 2026-02-02
 ---
-# STEP 0: 시나리오
-
+>**이런 순간, 익숙하지 않으신가요?** <br>
 코딩에 처음 입문하는 학생들은 어려운 문법보다, 눈앞에서 바로 반응이 보이는 활동을 더 재미있어 합니다. 
-
 Minecraft Education에서 Code Builder로 블록코딩을 하며 Agent를 직접 움직이게 하면, 학생들은 ‘코드 한 줄’이 아니라 ‘Agent의 행동 변화’로 코딩을 직관적으로 이해하게 됩니다. 
-
 예를 들어 Agent에게 블록 쌓기, 길 만들기, 농사짓기 등의 미션을 주고, 블록 코드를 조금씩 수정하면서 결과가 어떻게 달라지는지 실험하게 해 보세요. 
-
 게임을 하듯이 명령을 설계·수정하는 과정에서 자연스럽게 반복, 순서, 조건 등의 기초 개념을 익히며, “코딩이 어렵다”는 부담 없이 수업에 몰입할 수 있습니다.
 
 # STEP 1: Minecraft Education Block Coding 시작하기
