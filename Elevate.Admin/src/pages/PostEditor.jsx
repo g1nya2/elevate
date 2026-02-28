@@ -69,7 +69,6 @@ function PostEditor() {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
-  const [file, setFile] = useState(null)
 
   useEffect(() => {
     if (!isApiConfigured) {
@@ -113,7 +112,6 @@ function PostEditor() {
     }
   }, [postId, isNew])
 
-  const derivedSlug = useMemo(() => slugify(post.title), [post.title])
 
   const handleChange = (field) => (event) => {
     setPost((prev) => ({ ...prev, [field]: event.target.value }))
@@ -130,6 +128,7 @@ function PostEditor() {
 
     const payload = {
       ...post,
+      slug: post.slug || slugify(post.title),
       tags: tagsInput
         .split(',')
         .map((tag) => tag.trim())
@@ -156,16 +155,13 @@ function PostEditor() {
     }
   }
 
-  const handleUpload = async () => {
-    if (!file) {
-      setError('업로드할 파일을 선택하세요.')
-      return
-    }
+  const uploadThumbnail = async (selectedFile) => {
+    if (!selectedFile) return;
 
     if (!isApiConfigured) {
-      const previewUrl = URL.createObjectURL(file)
+      const previewUrl = URL.createObjectURL(selectedFile)
       setPost((prev) => ({ ...prev, thumbnailUrl: previewUrl }))
-      setMessage('API 없이 미리보기 이미지를 적용했습니다.')
+      setMessage('API 없이 썸네일 미리보기 이미지를 적용했습니다.')
       return
     }
 
@@ -175,37 +171,67 @@ function PostEditor() {
 
     try {
       const sas = await requestUploadSas({
-        fileName: file.name,
-        contentType: file.type,
+        fileName: selectedFile.name,
+        contentType: selectedFile.type,
       })
 
       await fetch(sas.uploadUrl, {
         method: 'PUT',
         headers: {
           'x-ms-blob-type': 'BlockBlob',
-          'Content-Type': file.type,
+          'Content-Type': selectedFile.type,
         },
-        body: file,
+        body: selectedFile,
       })
 
       const asset = await registerAsset({
         postId: postId || null,
         blobUrl: sas.blobUrl,
-        contentType: file.type,
-        sizeBytes: file.size,
-        fileName: file.name,
+        contentType: selectedFile.type,
+        sizeBytes: selectedFile.size,
+        fileName: selectedFile.name,
       })
 
       setPost((prev) => ({
         ...prev,
         thumbnailUrl: asset?.cdnUrl || asset?.blobUrl || sas.blobUrl,
       }))
-      setMessage('이미지가 업로드되었습니다.')
+      setMessage('썸네일 이미지가 업로드되었습니다.')
     } catch (err) {
-      setError(err.message || '이미지 업로드에 실패했습니다.')
+      setError(err.message || '썸네일 이미지 업로드에 실패했습니다.')
     } finally {
       setUploading(false)
     }
+  }
+
+  const uploadHtmlImage = async (selectedFile) => {
+    if (!isApiConfigured) {
+      return URL.createObjectURL(selectedFile)
+    }
+
+    const sas = await requestUploadSas({
+      fileName: selectedFile.name,
+      contentType: selectedFile.type,
+    })
+
+    await fetch(sas.uploadUrl, {
+      method: 'PUT',
+      headers: {
+        'x-ms-blob-type': 'BlockBlob',
+        'Content-Type': selectedFile.type,
+      },
+      body: selectedFile,
+    })
+
+    const asset = await registerAsset({
+      postId: postId || null,
+      blobUrl: sas.blobUrl,
+      contentType: selectedFile.type,
+      sizeBytes: selectedFile.size,
+      fileName: selectedFile.name,
+    })
+
+    return asset?.cdnUrl || asset?.blobUrl || sas.blobUrl
   }
 
   if (loading) {
@@ -270,22 +296,7 @@ function PostEditor() {
             />
           </FormField>
 
-          <FormField label="슬러그" hint="자동 생성된 슬러그를 그대로 쓰거나 수정할 수 있습니다.">
-            <div className="flex gap-2">
-              <input
-                className="flex-1 rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm transition-shadow duration-200 focus:outline-none focus:ring-1 focus:ring-ms-blue focus:border-ms-blue"
-                value={post.slug}
-                onChange={handleChange('slug')}
-                placeholder={derivedSlug}
-              />
-              <Button
-                variant="secondary"
-                onClick={() => setPost((prev) => ({ ...prev, slug: derivedSlug }))}
-              >
-                자동 생성
-              </Button>
-            </div>
-          </FormField>
+
 
           <FormField label="요약">
             <textarea
@@ -305,6 +316,7 @@ function PostEditor() {
                   htmlBody: value,
                 }))
               }
+              onUploadImage={uploadHtmlImage}
             />
           </FormField>
         </Card>
@@ -339,31 +351,29 @@ function PostEditor() {
                 placeholder="Azure, CosmosDB"
               />
             </FormField>
-            <FormField label="썸네일 URL">
-              <input
-                className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm transition-shadow duration-200 focus:outline-none focus:ring-1 focus:ring-ms-blue focus:border-ms-blue"
-                value={post.thumbnailUrl}
-                onChange={handleChange('thumbnailUrl')}
-                placeholder="https://..."
-              />
+            <FormField label="썸네일">
+              {post.thumbnailUrl && (
+                <div className="mb-2 w-full rounded-md border border-neutral-200 overflow-hidden bg-neutral-50 flex items-center justify-center">
+                  <img src={post.thumbnailUrl} alt="Thumbnail preview" className="max-h-40 w-auto object-contain" />
+                </div>
+              )}
+              <div className="flex gap-2 items-center">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (event) => {
+                    const fileObj = event.target.files?.[0];
+                    if (fileObj) {
+                      await uploadThumbnail(fileObj);
+                    }
+                  }}
+                  className="w-full text-sm text-neutral-600 file:mr-4 file:py-1.5 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-neutral-100 file:text-neutral-700 hover:file:bg-neutral-200 file:transition-colors file:cursor-pointer"
+                />
+              </div>
+              {uploading && <p className="text-xs text-ms-blue mt-1">썸네일 업로드 중...</p>}
             </FormField>
           </Card>
 
-          <Card colorScheme="green" className="space-y-4">
-            <h3 className="text-sm font-semibold text-neutral-800">이미지 업로드</h3>
-            <p className="text-xs text-slate-500">
-              SAS URL을 발급받아 Blob Storage에 직접 업로드합니다.
-            </p>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(event) => setFile(event.target.files?.[0] || null)}
-              className="text-sm text-neutral-600 file:mr-4 file:py-1.5 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-neutral-100 file:text-neutral-700 hover:file:bg-neutral-200 file:transition-colors file:cursor-pointer"
-            />
-            <Button variant="success" onClick={handleUpload} disabled={uploading} className="w-full">
-              {uploading ? '업로드 중...' : '업로드'}
-            </Button>
-          </Card>
         </aside>
       </div>
     </div>

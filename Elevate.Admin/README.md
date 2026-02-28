@@ -12,6 +12,7 @@
 - 포스트 상태(draft/published) 관리
 - 역할 기반 접근 제어(Static Web Apps 내장 인증)
 - 향후 Copilot Studio 연계를 고려한 메타데이터 중심 구조
+- 블로그 방문자 분석(PV, UV, 체류시간 및 유입경로 수집) 및 Admin 대시보드 제공
 
 ## 아키텍처 개요
 
@@ -30,6 +31,14 @@
 3. 이미지 업로드는 SAS 발급 후 Blob Storage에 직접 업로드
 4. 업로드 완료 후 assets 메타데이터를 Cosmos DB에 저장
 5. 발행 시 상태를 published로 변경
+
+## 블로그 방문자 트래킹 및 대시보드
+
+정적 사이트인 GitHub Pages의 사용자 트래픽을 관리자가 통계로 파악할 수 있도록 데이터 파이프라인과 대시보드 기능을 구축합니다.
+
+1. **데이터 수집 (GitHub Pages)**: 클라이언트 사이드에 **Application Insights SDK (JavaScript)** 탑재, `trackPageView` 및 `trackEvent` 전송
+2. **통계 분석 및 제공 (Azure Functions)**: Azure Monitor Data Access API를 호출하여 KQL (Kusto Query Language) 기반 통계 데이터(일자별 PV/UV, 유입 경로, 개별 포스트 방문수) 가공 및 전달
+3. **관리자 시각화 (Admin Frontend)**: Admin 앱 내 대시보드(Dashboard) 페이지를 신설하고 차트 라이브러리(Recharts 등)를 활용하여 요약 지표 및 트래픽 시각화 제공
 
 ## 환경 변수
 

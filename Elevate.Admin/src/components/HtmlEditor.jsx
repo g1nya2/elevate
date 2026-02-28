@@ -47,7 +47,7 @@ const ToolbarButton = ({ icon: IconComponent, onClick, isActive, title, disabled
 // Divider 컴포넌트를 외부로 이동
 const Divider = () => <div className="w-px h-5 bg-neutral-300 mx-1" />
 
-function HtmlEditor({ value, onChange }) {
+function HtmlEditor({ value, onChange, onUploadImage }) {
 
   const editor = useEditor({
     extensions: [
@@ -106,11 +106,35 @@ function HtmlEditor({ value, onChange }) {
   }
 
   const addImage = () => {
-    const url = window.prompt('이미지 URL을 입력하세요')
-
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run()
+    if (!onUploadImage) {
+      const url = window.prompt('이미지 URL을 입력하세요')
+      if (url) {
+        editor.chain().focus().setImage({ src: url }).run()
+      }
+      return
     }
+
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'image/*'
+    input.multiple = true
+    input.onchange = async () => {
+      const files = Array.from(input.files || [])
+      if (files.length > 0) {
+        for (const file of files) {
+          try {
+            const url = await onUploadImage(file)
+            if (url) {
+              editor.chain().focus().setImage({ src: url }).run()
+            }
+          } catch (error) {
+            console.error(error)
+            alert(`${file.name} 이미지 업로드에 실패했습니다.`)
+          }
+        }
+      }
+    }
+    input.click()
   }
 
   if (!editor) {
