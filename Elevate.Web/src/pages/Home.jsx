@@ -88,17 +88,17 @@ const Home = () => {
             to: '/blog/onenote',
             colorScheme: 'violet',
             ariaLabel: 'OneNote 페이지로 이동'
-        },
-        {
-            title: 'Elevate Blog',
-            description: 'M365의 업데이트 소식들을 한 곳에서 확인하세요.',
-            icon: '📦',
-            iconType: 'emoji',
-            to: '/blog',
-            colorScheme: 'slate',
-            ctaLabel: '전체 보기 →',
-            ariaLabel: 'Elevate Blog 전체 페이지로 이동'
         }
+        // {
+        //     title: 'Elevate Blog',
+        //     description: 'M365의 업데이트 소식들을 한 곳에서 확인하세요.',
+        //     icon: '📦',
+        //     iconType: 'emoji',
+        //     to: '/blog',
+        //     colorScheme: 'slate',
+        //     ctaLabel: '전체 보기 →',
+        //     ariaLabel: 'Elevate Blog 전체 페이지로 이동'
+        // }
     ];
 
     return (
