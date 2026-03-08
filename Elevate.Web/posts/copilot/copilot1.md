@@ -1,8 +1,6 @@
 title: Copilot 시작하기
 tags: [copilot, m365]
 date: 2026-03-09
-series: "Copilot 활용 가이드"
-seriesOrder: 1
 ---
 # Copilot #1
 "Copilot: 학교의 혁신을 이끄는 AI 파트너, 코파일럿, 지금 시작하세요!"
@@ -11,7 +9,7 @@ seriesOrder: 1
 
 Copilot은 Microsoft의 생태계 시스템을 이해하고, 사용자를 돕는 AI 에이전트 입니다. 주요 기능으로는 다음이 포함됩니다:
 
-![Picture5](/images/m365Copilot/copilot1/image5.jpg)
+![image](/images/m365Copilot/copilot1/image5.jpg)
 
 - 자동화된 텍스트 작성: 이메일, 보고서, 프레젠테이션 등 다양한 문서를 빠르게 작성.
 
@@ -33,7 +31,7 @@ Copilot은 Microsoft의 생태계 시스템을 이해하고, 사용자를 돕는
 
 조직(학교) 계정인 A3 플랜을 중심으로, Copilot 기능을 설명하는 웹사이트입니다. 이 웹사이트는 학교 계정을 기반으로 하며, 환경 중심의 분류에 따라 다양한 종류와 특징을 소개합니다.
 
-![1.png](/images/m365Copilot/copilot1/imagea.jpg)
+![image](/images/m365Copilot/copilot1/imagea.jpg)
 
 1) Ms store 설치형 Copilot: Windows와 MacOS의 Microsoft Store에서 Copilot을 다운로드하여 설치하여 작동하는 Copilot입니다. 설치형이라도 안정적인 인터넷 연결이 되어 있어야 합니다. 개인 혹은 조직 계정을 로그인하여 사용합니다.
 
@@ -60,7 +58,7 @@ Copilot은 Microsoft의 생태계 시스템을 이해하고, 사용자를 돕는
 
 ### | Ms store 설치형 Copilot
 
-![로컬 이미지.png](/images/m365Copilot/copilot1/image11.jpg)
+![image](/images/m365Copilot/copilot1/image11.jpg)
 
 [Win] 키를 입력한 후 ms store를 검색합니다. Microsoft Copilot을 검색합니다. 2가지 코파일럿이 나옵니다.
 
@@ -74,7 +72,7 @@ Copilot은 Microsoft의 생태계 시스템을 이해하고, 사용자를 돕는
 
 ### | Copilot 개인용
 
-![로컬 이미지.png](/images/m365Copilot/copilot1/image14.jpg)
+![image](/images/m365Copilot/copilot1/image14.jpg)
 
 개인용 코파일럿(Copilot)을 접속하고 Microsoft 개인 아이디로 로그인 하면 위와 같은 화면이 나오게 됩니다. 대화를 하고 질문을 할 수 있습니다. 특징은 다음과 같습니다.
 
@@ -84,7 +82,7 @@ Copilot은 Microsoft의 생태계 시스템을 이해하고, 사용자를 돕는
 
 3) Copilot과 대화하기를 활용하여 음성으로 대화하고 도움을 받을 수 있습니다.
 
-![로컬 이미지.png](/images/m365Copilot/copilot1/image17.jpg)
+![image](/images/m365Copilot/copilot1/image17.jpg)
 
 위 사진은 [Copilot과 대화하기] 버튼을 눌러 대화하는 화면입니다. 벌치, 메도우, 웨이브, 알더, 캐니언, 레인, 그로브, 엘름의 7가지 음성을 사용하여 대화가 가능합니다.
 
@@ -96,11 +94,11 @@ Copilot은 Microsoft의 생태계 시스템을 이해하고, 사용자를 돕는
 
 ### | M365 Copilot Chat
 
-![로컬 이미지.png](/images/m365Copilot/copilot1/image1c.jpg)
+![image](/images/m365Copilot/copilot1/image1c.jpg)
 
 회사(학교) 계정으로 로그인하면 copilot.cloud.microsoft로 연결되어 웹 기반 클라우드 M365 Copilot Chat에 접속됩니다. 이는 Microsoft 365 메인 페이지에 로그인한 후 [앱]에서 Copilot을 실행했을 때 나타나는 화면과 동일합니다.
 
-![로컬 이미지.png](/images/m365Copilot/copilot1/image1f.jpg)
+![image](/images/m365Copilot/copilot1/image1f.jpg)
 
 M365 Chat Copilot을 접속하고 Microsoft 학교 아이디로 로그인 하면 위와 같은 화면이 나오게 됩니다. 대화를 하고 질문을 할 수 있습니다. 개인용 Copilot과 다른 M365 Copliot Chat만의 특징은 다음과 같습니다.
 
@@ -112,7 +110,7 @@ M365 Chat Copilot을 접속하고 Microsoft 학교 아이디로 로그인 하면
 
 4) 과거 채팅 기록을 관리합니다. 채팅 기록 이름을 바꾸거나 삭제를 할 수 있습니다.
 
-![로컬 이미지.png](/images/m365Copilot/copilot1/image22.jpg)
+![image](/images/m365Copilot/copilot1/image22.jpg)
 
 교육용 M365 Copilot Chat의 가장 큰 점은 엔터프라이즈 데이터 보호 입니다. Microsoft는 AI의 윤리적 사용 및 데이터 보호에 진심인 기업으로 플랫폼을 관련 방향성으로 설계하고 배포합니다. 엔터프라이즈 보호에 대해 간단히 알아보도록 하겠습니다.
 
@@ -132,23 +130,23 @@ M365 Chat Copilot을 접속하고 Microsoft 학교 아이디로 로그인 하면
 
 ### | Edge 연동 Copilot
 
-![로컬 이미지.png](/images/m365Copilot/copilot1/image25.jpg)
+![image](/images/m365Copilot/copilot1/image25.jpg)
 
 [Win] 키를 누르고 edge를 검색합니다. 엣지 실행 후 왼쪽 상단의 프로필을 클릭하고 나타나는 메뉴 하단의 [기타 프로필] - [새 회사 또는 학교 프로필 설정]을 클릭합니다.
 
-![로컬 이미지.png](/images/m365Copilot/copilot1/image26.jpg)
+![image](/images/m365Copilot/copilot1/image26.jpg)
 
 새 계정 추가를 선택하고 [로그인하여 데이터 동기화]를 클릭합니다. 회사(학교)계정 아이디를 입력하고 로그인 클릭합니다.
 
-![로컬 이미지.png](/images/m365Copilot/copilot1/image2b.jpg)
+![image](/images/m365Copilot/copilot1/image2b.jpg)
 
 암호를 입력한 뒤 로그인을 클릭하면 계정 보안을 위한 자세한 정보 창이 나타고 여기서 [다음]을 클릭합니다. 1)Microsoft Authenticator 앱을 설치하여 보안을 강화할 수 있음을 알리는 창이 나옵니다. 기서 [다음]을 누르면 반드시 Microsoft Authenticator 앱을 설치해야 하며, 로그인 시 보안 암호(숫자)를 앱으로 확인하여 인증 후 로그인하게 됩니다. 앱 설치를 원하지 않는 경우 [설정 건너뛰기]를 선택할 수 있습니다. 장기적으로는 보안 강화를 위해 앱 설치를 권장하지만, 이번 실습에서는 설치하지 않고 로그인을 진행하겠습니다.
 
-![1.gif](/images/m365Copilot/copilot1/image2e.jpg)
+![image](/images/m365Copilot/copilot1/image2e.jpg)
 
 조직 리소스에 엑세스하는 과정에서 조금 시간(약 1분 ~ 2분)이 걸립니다. 이유는 Microsoft 365 시스템 내의생태계 및 그 생태계 내부의 데이터에 접근 가능하도록 연결하는 과정이라 생각하면 됩니다. 완료 후 테마를 설정하고 로그인이 완료됩니다. 반드시 동기화를 시켜줍니다.
 
-![2.gif](/images/m365Copilot/copilot1/image31.jpg)
+![image](/images/m365Copilot/copilot1/image31.jpg)
 
 오른쪽 사이드바 상단의 코파일럿을 클릭한 뒤, 회사(학교) 계정으로 한 번 더 로그인합니다. 로그인이 완료되면, 이후 엣지를 사용할 때 언제든지 코파일럿을 사용할 수 있는 환경이 조성됩니다. 이것으로 엣지 코파일럿 세팅이 완료되었습니다.
 
@@ -158,11 +156,11 @@ M365 Chat Copilot을 접속하고 Microsoft 학교 아이디로 로그인 하면
 
 Web 용 코파일럿은 [https://copilot.microsoft.com/](https:/copilot.microsoft.com) 사이트에 접속 후 웹에서 로그인을 해주면 연결됩니다.
 
-![로컬 이미지.png](/images/m365Copilot/copilot1/image36.jpg)
+![image](/images/m365Copilot/copilot1/image36.jpg)
 
 로그인을 하지 않은 상태의 코파일럿은 1) 로그인 전에 간단한 개인 정보를 입력하여 사용할 수 있도록 설정되어 있습니다. 이는 개인정보를 수집하기 위함이 아니라, 코파일럿이 사용자를 기본적으로 이해하고 더 나은 결과를 제시하기 위한 목적입니다. 이후 회사(학교) 계정 로그인 과정과 동일하게 로그인을 진행합니다. 이 과정에서도 Authenticator 앱을 사용하지 않고 [설정 건너뛰기]를 선택하여 로그인하겠습니다.
 
-![로컬 이미지.png](/images/m365Copilot/copilot1/image37.jpg)
+![image](/images/m365Copilot/copilot1/image37.jpg)
 
 로그인이 완료되었습니다. 기본적으로 설치형 Copilot과 인터페이스가 동일합니다. 이는 m365.cloud.microsoft로 연결된 상태에서 Copilot 앱을 사용하는 개념이기 때문입니다.
 
