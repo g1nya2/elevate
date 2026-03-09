@@ -21,24 +21,9 @@
 ### 3. GitHub commit, push 금지
 - **코드 변경 사항을 에이전트가 GitHub에 커밋하거나 푸시하는 행위는 절대 금지한다.**
 - 변경 사항을 GitHub에 반영해야 하는 경우, 수동으로 커밋하고 푸시한다.
+
+### 4. 보안 및 인증 원칙 준수
+- **보안 및 인증 관련 정책을 엄격히 준수한다.**
+- documents/POLICY.md에 명시된 보안 요구사항과 인증 방식을 철저히 따르며, 절대 금지된 행위를 하지 않는다.
+- 민감한 정보는 절대 코드에 하드코딩하지 않고, 안전한 방법으로 관리한다.
 ---
-
-## 🔐 보안 및 인증 원칙
-
-### 정책 준수
-
-#### ✅ 필수 준수 사항
-| 영역 | 정책 요구사항 | 구현 방식 |
-|------|-------------|---------|
-| **VM 사용** | H, N, M 시리즈 금지 | Azure App Service (PaaS) 사용 |
-| **데이터베이스** | SQL 금지 | Cosmos DB (NoSQL) 필수 |
-| **인증** | Entra ID 기반 | 모든 인증은 회사 계정 사용 |
-| **스토리지** | 키 기반 인증 금지 | Managed Identity + RBAC |
-| **Analytics** | 키 비활성화 | Managed Identity (서버) + JS SDK (클라이언트) |
-| **임시 허용** | SecurityControl:Ignore 금지 | 14일 임시 허용 사용 불가 |
-
-#### ❌ 절대 금지 사항
-- Connection String, Access Key, API Key를 코드에 하드코딩
-- Azure SQL Database 사용
-- VM 기반 인프라 (IaaS)
-- 임시 보안 예외 (SecurityControl: Ignore) 사용
