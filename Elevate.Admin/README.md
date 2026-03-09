@@ -19,7 +19,7 @@
 이 Admin 앱은 Azure 기반의 서버리스 아키텍처를 전제로 설계됩니다.
 
 - **Admin 프론트엔드**: Azure Static Web Apps (Entra ID 로그인 + 역할 기반 라우팅)
-- **Backend API**: Azure Functions (HTTP Trigger)
+- **Backend API**: Azure App Service (Node.js/Express)
 - **운영 데이터**: Azure Cosmos DB for NoSQL (포스트/메타데이터 저장)
 - **이미지 저장소**: Azure Blob Storage (바이너리 저장)
 - **블로그 트래킹**: Application Insights JS SDK (GitHub Pages에 삽입)
@@ -37,20 +37,71 @@
 정적 사이트인 GitHub Pages의 사용자 트래픽을 관리자가 통계로 파악할 수 있도록 데이터 파이프라인과 대시보드 기능을 구축합니다.
 
 1. **데이터 수집 (GitHub Pages)**: 클라이언트 사이드에 **Application Insights SDK (JavaScript)** 탑재, `trackPageView` 및 `trackEvent` 전송
-2. **통계 분석 및 제공 (Azure Functions)**: Azure Monitor Data Access API를 호출하여 KQL (Kusto Query Language) 기반 통계 데이터(일자별 PV/UV, 유입 경로, 개별 포스트 방문수) 가공 및 전달
+2. **통계 분석 및 제공 (Azure App Service API)**: Azure Monitor Data Access API를 호출하여 KQL (Kusto Query Language) 기반 통계 데이터(일자별 PV/UV, 유입 경로, 개별 포스트 방문수) 가공 및 전달
 3. **관리자 시각화 (Admin Frontend)**: Admin 앱 내 대시보드(Dashboard) 페이지를 신설하고 차트 라이브러리(Recharts 등)를 활용하여 요약 지표 및 트래픽 시각화 제공
 
 ## 환경 변수
 
-- `VITE_API_BASE_URL`: Azure Functions API 엔드포인트 (예: `https://<app>.azurewebsites.net/api`)
+### 로컬 개발
 
-예시는 [.env.example](.env.example)를 참고하세요.
+`.env.example`을 `.env`로 복사하여 다음 값을 설정하세요:
+
+```bash
+# Azure App Service Backend API
+VITE_API_BASE_URL=xxxxx
+
+# Entra ID Authentication (테넌트 제한용)
+VITE_AZURE_TENANT_ID=your-tenant-id-here
+VITE_AZURE_CLIENT_ID=your-client-id-here
+```
+
+#### 환경 변수 확인 방법
+
+**VITE_AZURE_TENANT_ID**:
+```bash
+# Azure CLI로 확인
+az account show --query tenantId -o tsv
+
+# 또는 Azure Portal
+# Entra ID > Overview > Tenant ID
+```
+
+**VITE_AZURE_CLIENT_ID**:
+```bash
+# Terraform 적용 후 확인
+cd infrastructure/terraform
+terraform output entra_admin_app_id
+```
 
 API가 아직 준비되지 않은 경우, Admin은 목업 데이터를 사용해 UI를 미리 확인할 수 있습니다.
 
-## 인증/라우팅 설정
+## 인증 및 테넌트 제한
 
-Static Web Apps의 내장 인증을 사용합니다. 모든 Admin 경로는 `authenticated` 역할로 제한되어 있으며, 구성은 [staticwebapp.config.json](staticwebapp.config.json)에 정의됩니다.
+### Entra ID 기반 인증
+
+이 앱은 **Azure Static Web Apps의 내장 인증**과 **Entra ID 앱 등록**을 사용합니다:
+
+- **테넌트 제한**: `sign_in_audience = "AzureADMyOrg"` 설정으로 **회사 테넌트 사용자만** 접근 가능
+- **다른 테넌트의 Microsoft 계정**: 로그인 차단
+- **개인 Microsoft 계정** (Hotmail, Outlook 등): 로그인 차단
+
+### 설정 구조
+
+인증 구성은 다음 파일들에서 관리됩니다:
+
+1. **[staticwebapp.config.json](staticwebapp.config.json)**: Azure Static Web Apps 인증 프로바이더 설정
+   - `auth.identityProviders.azureActiveDirectory` 섹션에서 Entra ID 연결
+   - `openIdIssuer`에 Tenant ID 하드코딩 필요
+
+2. **[infrastructure/terraform/entra-id.tf](../infrastructure/terraform/entra-id.tf)**: Entra ID 앱 등록 리소스
+   - `sign_in_audience = "AzureADMyOrg"` 설정
+
+3. **Azure Static Web App 환경 변수** (Azure Portal 또는 CLI에서 설정):
+   - `AZURE_CLIENT_ID`: Entra ID 앱 등록의 Client ID
+
+### 역할 기반 라우팅
+
+모든 Admin 경로는 `authenticated` 역할로 제한되어 있으며, 로그인하지 않은 사용자는 자동으로 Entra ID 로그인 페이지로 리다이렉트됩니다.
 
 ## API 계약 (가정)
 
