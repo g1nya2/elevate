@@ -1,4 +1,4 @@
-title: 📖 M365 이름 일괄변경 방법
+title: 💡M365 이름 일괄변경 방법
 tags: [m365, powershell]
 date: 2026-03-10
 ---
