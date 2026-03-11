@@ -27,6 +27,7 @@ export default function PostList() {
   const { category } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const pageParam = parseInt(searchParams.get('page') || '1', 10);
+  const seriesParam = (searchParams.get('series') || '').trim();
   // 4x5 슬롯(20개) 고정 레이아웃을 유지하기 위한 페이지 크기
   const PAGE_SIZE = 20;
 
@@ -101,8 +102,8 @@ export default function PostList() {
     });
   }, [allPosts, selectedTags]);
 
-  // Calculate current series data for sidebar
-  const currentSeriesData = useMemo(() => {
+  // Build available series options for sidebar (category scoped)
+  const availableSeriesData = useMemo(() => {
     if (!category || category === 'all') return null;
     const categorySeries = seriesByCategory[category];
     if (!categorySeries || Object.keys(categorySeries).length === 0) return null;
@@ -115,20 +116,33 @@ export default function PostList() {
       }
     });
 
-    // Find the most common series
+    // Keep only series that can be displayed in the sidebar
     const seriesNames = Object.keys(seriesCounts);
     if (seriesNames.length === 0) return null;
 
-    const primarySeries = seriesNames.sort((a, b) => seriesCounts[b] - seriesCounts[a])[0];
-    const seriesPosts = categorySeries[primarySeries];
+    const seriesList = seriesNames
+      .map((name) => ({
+        key: name,
+        title: name,
+        count: seriesCounts[name] || 0,
+        posts: categorySeries[name] || [],
+      }))
+      .filter((item) => item.posts.length >= 2)
+      .sort((a, b) => {
+        if (b.count !== a.count) return b.count - a.count;
+        return a.title.localeCompare(b.title);
+      });
 
-    if (!seriesPosts || seriesPosts.length < 2) return null;
-
-    return {
-      title: primarySeries,
-      posts: seriesPosts,
-    };
+    return seriesList.length > 0 ? seriesList : null;
   }, [category, seriesByCategory, filteredPosts]);
+
+  const selectedSeriesData = useMemo(() => {
+    if (!availableSeriesData || availableSeriesData.length === 0) return null;
+    const selected = availableSeriesData.find((item) => item.key === seriesParam);
+    return selected || availableSeriesData[0];
+  }, [availableSeriesData, seriesParam]);
+
+  const hasSeriesSidebar = Boolean(selectedSeriesData);
 
   // Paginate filtered posts
   const total = filteredPosts.length;
@@ -148,6 +162,28 @@ export default function PostList() {
     });
     setSearchParams(newParams, { replace: false });
   };
+
+  useEffect(() => {
+    if (!isValidCategory) return;
+
+    if (category === 'all') {
+      if (seriesParam) {
+        updateUrlParams({ series: '' });
+      }
+      return;
+    }
+
+    if (!availableSeriesData || availableSeriesData.length === 0) {
+      if (seriesParam) {
+        updateUrlParams({ series: '' });
+      }
+      return;
+    }
+
+    if (!seriesParam || !availableSeriesData.some((item) => item.key === seriesParam)) {
+      updateUrlParams({ series: availableSeriesData[0].key });
+    }
+  }, [isValidCategory, category, seriesParam, availableSeriesData]);
 
   const handlePageChange = (p) => {
     updateUrlParams({ page: String(p) });
@@ -170,6 +206,10 @@ export default function PostList() {
 
   const handleClearAllTags = () => {
     updateUrlParams({ tags: '', page: '1' });
+  };
+
+  const handleSeriesChange = (seriesKey) => {
+    updateUrlParams({ series: seriesKey || '' });
   };
 
   // Early return for invalid category - placed after all hooks
@@ -209,7 +249,7 @@ export default function PostList() {
         </nav>
       </header>
 
-      <div className={`flex flex-col lg:grid gap-6 ${currentSeriesData ? 'lg:grid-cols-12' : 'lg:grid-cols-10'}`}>
+      <div className={`flex flex-col lg:grid gap-6 ${hasSeriesSidebar ? 'lg:grid-cols-12' : 'lg:grid-cols-10'}`}>
         <aside className="w-full lg:col-span-2">
           <TagFilter
             allTags={allTags}
@@ -219,7 +259,7 @@ export default function PostList() {
           />
         </aside>
 
-        <section className={`w-full ${currentSeriesData ? 'lg:col-span-7 xl:col-span-8' : 'lg:col-span-8'}`}>
+        <section className={`w-full ${hasSeriesSidebar ? 'lg:col-span-7 xl:col-span-8' : 'lg:col-span-8'}`}>
           {loading && <div className="text-center py-8">로딩 중...</div>}
           <div className="mb-4 text-sm text-slate-600 min-h-6 flex items-center">
             {!loading && selectedTags.length > 0 && (
@@ -230,11 +270,12 @@ export default function PostList() {
           <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
         </section>
 
-        {currentSeriesData && (
+        {hasSeriesSidebar && (
           <aside className="w-full lg:col-span-3 xl:col-span-2 hidden lg:block">
             <SeriesNavigator
-              seriesPosts={currentSeriesData.posts}
-              seriesTitle={currentSeriesData.title}
+              seriesOptions={availableSeriesData || []}
+              selectedSeries={selectedSeriesData?.key || ''}
+              onSeriesChange={handleSeriesChange}
               category={category}
               currentPostId={null}
             />
