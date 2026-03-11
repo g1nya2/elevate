@@ -103,7 +103,7 @@ export default function SeriesNavigator({
               aria-haspopup="listbox"
               aria-expanded={isOpen}
               onClick={() => setIsOpen((prev) => !prev)}
-              className="w-full rounded-lg border border-slate-200 bg-white/90 px-3 py-2 text-sm text-slate-700 flex items-center justify-between hover:border-ms-blue/40 focus:outline-none focus:ring-2 focus:ring-ms-blue/40"
+              className="w-full rounded-lg border border-white/70 bg-white/85 backdrop-blur px-3 py-2 text-sm text-slate-700 flex items-center justify-between hover:border-ms-blue/40 transition-colors focus:outline-none focus:ring-2 focus:ring-ms-blue/40"
             >
               <span className="truncate mr-2">{seriesTitle} ({seriesPosts.length})</span>
               <svg
@@ -120,7 +120,7 @@ export default function SeriesNavigator({
               <ul
                 role="listbox"
                 aria-labelledby="series-select"
-                className="absolute z-20 mt-2 w-full rounded-xl border border-slate-200 bg-white/95 backdrop-blur shadow-lg p-1.5"
+                className="absolute z-20 mt-2 w-full rounded-xl border border-white/70 bg-white/90 backdrop-blur-xl shadow-lg p-1.5"
               >
                 {seriesOptions.map((series) => {
                   const isSelected = series.key === currentSeries?.key;
@@ -131,8 +131,8 @@ export default function SeriesNavigator({
                         onClick={() => handleSelectSeries(series.key)}
                         className={`w-full text-left px-2.5 py-2 rounded-lg text-sm transition-colors ${
                           isSelected
-                            ? 'bg-ms-blue/10 text-ms-blue font-semibold'
-                            : 'text-slate-700 hover:bg-slate-100'
+                            ? 'bg-ms-blue/12 text-ms-blue font-semibold border border-ms-blue/20'
+                            : 'text-slate-700 hover:bg-white/80'
                         }`}
                       >
                         {series.title} ({series.posts?.length || 0})
@@ -157,8 +157,8 @@ export default function SeriesNavigator({
                     to={getPostHref(post)}
                     className={`block px-3 py-2.5 rounded-lg text-sm transition-all duration-200 ${
                       isActive
-                        ? 'bg-ms-blue/10 text-ms-blue font-semibold border-l-4 border-ms-blue'
-                        : 'text-slate-700 hover:bg-slate-100 hover:text-ms-blue border-l-4 border-transparent'
+                        ? 'bg-ms-blue/12 text-ms-blue font-semibold border-l-4 border-ms-blue shadow-[0_8px_20px_-12px_rgba(0,120,212,0.65)]'
+                        : 'text-slate-700 hover:bg-white/75 hover:text-ms-blue border-l-4 border-transparent'
                     }`}
                   >
                     <div className="flex items-start gap-2">
@@ -182,7 +182,7 @@ export default function SeriesNavigator({
               {previousPost ? (
                 <Link
                   to={getPostHref(previousPost)}
-                  className="flex-1 h-9 rounded-md border border-slate-200 px-2 py-1.5 text-sm text-slate-700 hover:border-ms-blue/40 hover:text-ms-blue transition-colors text-center inline-flex items-center justify-center"
+                  className="flex-1 h-9 rounded-md border border-white/70 bg-white/80 px-2 py-1.5 text-sm text-slate-700 hover:border-ms-blue/40 hover:text-ms-blue transition-colors text-center inline-flex items-center justify-center"
                 >
                   이전 글
                 </Link>
@@ -190,7 +190,7 @@ export default function SeriesNavigator({
 
               <Link
                 to={backToListHref || `/${category}`}
-                className="flex-1 h-9 rounded-md border border-slate-200 px-2 py-1.5 text-sm text-slate-700 hover:border-ms-blue/40 hover:text-ms-blue transition-colors text-center inline-flex items-center justify-center"
+                className="flex-1 h-9 rounded-md border border-white/70 bg-white/80 px-2 py-1.5 text-sm text-slate-700 hover:border-ms-blue/40 hover:text-ms-blue transition-colors text-center inline-flex items-center justify-center"
               >
                 목록으로
               </Link>
@@ -198,7 +198,7 @@ export default function SeriesNavigator({
               {nextPost ? (
                 <Link
                   to={getPostHref(nextPost)}
-                  className="flex-1 h-9 rounded-md border border-slate-200 px-2 py-1.5 text-sm text-slate-700 hover:border-ms-blue/40 hover:text-ms-blue transition-colors text-center inline-flex items-center justify-center"
+                  className="flex-1 h-9 rounded-md border border-white/70 bg-white/80 px-2 py-1.5 text-sm text-slate-700 hover:border-ms-blue/40 hover:text-ms-blue transition-colors text-center inline-flex items-center justify-center"
                 >
                   다음 글
                 </Link>
