@@ -19,16 +19,14 @@ export default function SeriesNavigator({
   onSeriesChange = () => {},
   category = '',
   currentPostId = null,
+  buildPostHref = null,
+  previousPost = null,
+  nextPost = null,
+  backToListHref = '',
+  sticky = true,
 }) {
-  if (!seriesOptions || seriesOptions.length === 0) {
-    return null;
-  }
-
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const currentSeries = seriesOptions.find((item) => item.key === selectedSeries) || seriesOptions[0];
-  const seriesPosts = currentSeries?.posts || [];
-  const seriesTitle = currentSeries?.title || '시리즈';
 
   useEffect(() => {
     function handleDocumentClick(event) {
@@ -53,14 +51,29 @@ export default function SeriesNavigator({
     };
   }, []);
 
+  if (!seriesOptions || seriesOptions.length === 0) {
+    return null;
+  }
+
+  const currentSeries = seriesOptions.find((item) => item.key === selectedSeries) || seriesOptions[0];
+  const seriesPosts = currentSeries?.posts || [];
+  const seriesTitle = currentSeries?.title || '시리즈';
+
   const handleSelectSeries = (seriesKey) => {
     onSeriesChange(seriesKey);
     setIsOpen(false);
   };
 
+  const getPostHref = (post) => {
+    if (typeof buildPostHref === 'function') {
+      return buildPostHref(post);
+    }
+    return `/${category}/${post.slug}`;
+  };
+
   return (
     <aside className="w-full">
-      <div className="sticky top-4 clean-card no-hover rounded-2xl bg-white/80 backdrop-blur-xl border border-white/50 shadow-sm p-4 sm:p-5">
+      <div className={`${sticky ? 'sticky top-4 ' : ''}clean-card no-hover rounded-2xl bg-white/80 backdrop-blur-xl border border-white/50 shadow-sm p-4 sm:p-5`}>
         <div className="mb-4 space-y-3">
           <h3 className="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
             <svg 
@@ -141,7 +154,7 @@ export default function SeriesNavigator({
               return (
                 <li key={post.slug}>
                   <Link
-                    to={`/${category}/${post.slug}`}
+                    to={getPostHref(post)}
                     className={`block px-3 py-2.5 rounded-lg text-sm transition-all duration-200 ${
                       isActive
                         ? 'bg-ms-blue/10 text-ms-blue font-semibold border-l-4 border-ms-blue'
@@ -162,6 +175,37 @@ export default function SeriesNavigator({
             })}
           </ol>
         </nav>
+
+        {(previousPost || nextPost) && (
+          <div className="mt-4 pt-4 border-t border-slate-200/70">
+            <div className="flex items-center gap-2">
+              {previousPost ? (
+                <Link
+                  to={getPostHref(previousPost)}
+                  className="flex-1 h-9 rounded-md border border-slate-200 px-2 py-1.5 text-sm text-slate-700 hover:border-ms-blue/40 hover:text-ms-blue transition-colors text-center inline-flex items-center justify-center"
+                >
+                  이전 글
+                </Link>
+              ) : <div className="flex-1 h-9" />}
+
+              <Link
+                to={backToListHref || `/${category}`}
+                className="flex-1 h-9 rounded-md border border-slate-200 px-2 py-1.5 text-sm text-slate-700 hover:border-ms-blue/40 hover:text-ms-blue transition-colors text-center inline-flex items-center justify-center"
+              >
+                목록으로
+              </Link>
+
+              {nextPost ? (
+                <Link
+                  to={getPostHref(nextPost)}
+                  className="flex-1 h-9 rounded-md border border-slate-200 px-2 py-1.5 text-sm text-slate-700 hover:border-ms-blue/40 hover:text-ms-blue transition-colors text-center inline-flex items-center justify-center"
+                >
+                  다음 글
+                </Link>
+              ) : <div className="flex-1 h-9" />}
+            </div>
+          </div>
+        )}
       </div>
     </aside>
   );

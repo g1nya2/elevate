@@ -78,6 +78,9 @@
     - `onSeriesChange(seriesKey)` - 시리즈 변경 콜백
     - `category` - 카테고리
     - `currentPostId` - 현재 게시글 ID (선택)
+    - `buildPostHref(post)` - 상세 페이지 문맥(쿼리 포함) 링크 생성 콜백 (선택)
+    - `previousPost` / `nextPost` - 사이드바 하단 요약형 이전/다음 이동 데이터 (선택)
+    - `sticky` - sticky 적용 여부 (기본값 true)
   - 역할: 연속 학습 콘텐츠 네비게이션
   - 특징: Sticky 위치, 드롭다운 선택 UI, 모바일에서 숨김
 
@@ -156,9 +159,10 @@
 - **설명**: 게시글 상세 페이지
 - **요소**:
   - 좌측: 본문 (마크다운 렌더링)
-  - 우측: `TableOfContents` (조건부)
+  - 우측: `SeriesNavigator` + `TableOfContents` (조건부, 시리즈가 있으면 상단에 시리즈 박스 표시)
+  - 본문 하단: 상세형 이전/다음 글 카드 (시리즈 내부 순서 기준)
 - **레이아웃**: 2단
-- **역할**: 전체 게시글 콘텐츠 표시
+- **역할**: 전체 게시글 콘텐츠 표시 + 시리즈 탐색/순차 이동
 
 ### NotFound.jsx ([src/pages/NotFound.jsx](src/pages/NotFound.jsx))
 - **설명**: 404 에러 페이지
