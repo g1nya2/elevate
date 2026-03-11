@@ -250,7 +250,7 @@ export default function PostList() {
       </header>
 
       <div className={`flex flex-col lg:grid gap-6 ${hasSeriesSidebar ? 'lg:grid-cols-12' : 'lg:grid-cols-10'}`}>
-        <aside className="w-full lg:col-span-2">
+        <aside className="w-full lg:col-span-2 lg:sticky lg:top-4 lg:self-start">
           <TagFilter
             allTags={allTags}
             selectedTags={selectedTags}
@@ -271,13 +271,14 @@ export default function PostList() {
         </section>
 
         {hasSeriesSidebar && (
-          <aside className="w-full lg:col-span-3 xl:col-span-2 hidden lg:block">
+          <aside className="w-full lg:col-span-3 xl:col-span-2 hidden lg:block lg:sticky lg:top-4 lg:self-start">
             <SeriesNavigator
               seriesOptions={availableSeriesData || []}
               selectedSeries={selectedSeriesData?.key || ''}
               onSeriesChange={handleSeriesChange}
               category={category}
               currentPostId={null}
+              sticky={false}
             />
           </aside>
         )}
